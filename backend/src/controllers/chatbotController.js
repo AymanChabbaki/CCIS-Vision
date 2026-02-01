@@ -117,28 +117,28 @@ exports.getTemplates = async (req, res, next) => {
         name: 'Modèle Entreprises',
         description: 'Modèle Excel pour importer des entreprises avec tous les champs requis (nom, ICE, téléphone, email, etc.)',
         filename: 'Template_Import_Entreprises.xlsx',
-        downloadUrl: '/api/v1/chatbot/templates/companies'
+        downloadUrl: 'https://res.cloudinary.com/dqn8k0w2y/raw/upload/v1769986741/Template_Import_Entreprises_io34ar.xlsx'
       },
       {
         id: 'activities',
         name: 'Modèle Activités',
         description: 'Modèle Excel pour importer des formations, missions et consultations avec les entreprises bénéficiaires',
         filename: 'Template_Import_Activites.xlsx',
-        downloadUrl: '/api/v1/chatbot/templates/activities'
+        downloadUrl: 'https://res.cloudinary.com/dqn8k0w2y/raw/upload/v1769986741/Template_Import_Activites_guzpyg.xlsx'
       },
       {
         id: 'budgets',
         name: 'Modèle Budgets',
         description: 'Modèle Excel pour importer les budgets et dépenses par département et activité',
         filename: 'Template_Import_Budgets.xlsx',
-        downloadUrl: '/api/v1/chatbot/templates/budgets'
+        downloadUrl: 'https://res.cloudinary.com/dqn8k0w2y/raw/upload/v1769986741/Template_Import_Budgets_nriycn.xlsx'
       },
       {
         id: 'participants',
         name: 'Modèle Participants',
         description: 'Modèle Excel pour importer les participants aux formations et activités',
         filename: 'Template_Import_Participants.xlsx',
-        downloadUrl: '/api/v1/chatbot/templates/participants'
+        downloadUrl: 'https://res.cloudinary.com/dqn8k0w2y/raw/upload/v1769986741/Template_Import_Participants_dndkox.xlsx'
       }
     ];
 

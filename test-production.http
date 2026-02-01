@@ -1,0 +1,50 @@
+### Test Production Backend
+### Replace {{baseUrl}} with your actual Vercel backend URL
+
+@baseUrl = https://ccis-vision-3l72.vercel.app/api/v1
+@token = 
+
+### 1. Health Check
+GET {{baseUrl}}/health
+
+### 2. Login (Get Token)
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@ccis.ma",
+  "password": "admin123"
+}
+
+### 3. Test Database - Get Companies (REQUIRES TOKEN)
+GET {{baseUrl}}/companies
+Authorization: Bearer {{token}}
+
+### 4. Test Database - Get Users (REQUIRES TOKEN)
+GET {{baseUrl}}/users
+Authorization: Bearer {{token}}
+
+### 5. Test Chatbot (REQUIRES TOKEN)
+POST {{baseUrl}}/chatbot/message
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "message": "comment créer une entreprise?"
+}
+
+### 6. Get Chatbot Templates (REQUIRES TOKEN)
+GET {{baseUrl}}/chatbot/templates
+Authorization: Bearer {{token}}
+
+### 7. Test Activities (REQUIRES TOKEN)
+GET {{baseUrl}}/activities
+Authorization: Bearer {{token}}
+
+### 8. Test Budgets (REQUIRES TOKEN)
+GET {{baseUrl}}/budgets
+Authorization: Bearer {{token}}
+
+### 9. Test Statistics (REQUIRES TOKEN)
+GET {{baseUrl}}/statistics/overview
+Authorization: Bearer {{token}}
