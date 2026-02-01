@@ -1,0 +1,46 @@
+1. Functional Features (What to build)
+According to the document, the core goal is to move from decentralized Excel files to a centralized web platform.
+
+Authentication & Roles: Secure login for Admins (Direction) and Service Users (who upload data).
+
+Data Centralization Module (The Core):
+
+
+Excel Import: A feature to upload existing Excel files.
+
+
+Data Cleaning: Scripts to validate data, remove duplicates, and normalize formats upon upload.
+
+
+Historization: Keeping a history of data to see changes over time.
+
+Activity Monitoring Module:
+
+CRUD (Create, Read, Update, Delete) interfaces to manage data for: Formations, Events, Projects, and Services to companies.
+
+Calculators for costs, number of beneficiaries, and frequency of activities.
+
+Decision Support Dashboard:
+
+Dynamic charts (using Chart.js or similar) showing KPIs (e.g., total companies helped, budget used vs. remaining).
+
+
+Filters by date, department, and service.
+
+Advanced Features (differentiation):
+
+
+Interactive Map: A geolocation map showing where the companies/beneficiaries are located.
+
+
+Alert System: Automatic notifications when specific thresholds (e.g., budget exceeded) are reached.
+
+
+Intelligent Chatbot: AI-powered assistant to help users with:
+- Tracking and monitoring (statistics, company/activity data)
+- Troubleshooting (error resolution, common problems)
+- Information retrieval (detailed help, FAQ, documentation)
+- Excel template downloads (companies, activities)
+- Context-aware responses based on user queries
+- Conversation history for continuous support
+- Quick help topics and guided assistance

@@ -1,0 +1,103 @@
+1. Organizational Structure (Hierarchy)
+Head Office (Siège Régional):
+
+
+President: Abdallah Abbad 
+
+
+Regional Direction (coordinates all departments) 
+
+
+Service Audit et Contrôle de Gestion (Audit & Management Control) 
+
+5 Main Departments:
+
+Département Relations Institutionnelles 
+
+Département Stratégie et Partenariat 
+
+Département Appui et Promotion 
+
+Département Administratif et Financier 
+
+Département Services aux ressortissants et Veille économique 
+
+Annexes (Kénitra & Khémisset): These annexes mirror the main structure but on a smaller scale: 
+
+Direction Annexe
+
+Département d'Appui et Promotion
+
+Département de Services aux ressortissants et Veille économique
+
+Service Administratif et Financier
+
+2. Department Missions & Services
+Use these detailed missions to define the data fields for your "Activity Monitoring" module.
+
+A. Département Appui et Promotion (Support & Promotion) 
+
+Core Missions: Organizing training and events (B2B, fairs), collecting business opportunities, economic monitoring.
+
+Sub-Service: Service Formation et Networking.
+
+Develop partnerships with training bodies.
+
+Create meeting spaces for economic operators.
+
+Establish annual training programs based on employment evolution.
+
+B. Département Services aux ressortissants et Veille économique (Member Services) 
+
+Core Missions: Communication plans, databases on regional economy, documentation funds, website management.
+
+Sub-Service: Service Information et Communication.
+
+Reception and orientation of members (fiscal, legal, financial questions).
+
+Creating and managing economic databases.
+
+Publishing the business directory and newsletters.
+
+C. Département Relations Institutionnelles (Institutional Relations) 
+
+Core Missions: Managing relations with elected officials, public administrations, and professional organizations.
+
+Sub-Service: Service Organes de gestion et Coordination.
+
+Organizing General Assemblies and Bureau meetings.
+
+Drafting meeting minutes (PVs) and reports.
+
+D. Département Stratégie et Partenariat 
+
+Core Missions: Elaborating CCIS strategies and overseeing partnership implementation.
+
+E. Service Audit et Contrôle de Gestion 
+
+Core Missions: Producing management reports and dashboards, analyzing management procedures, and conducting internal audits.
+
+F. Service Administratif et Financier (Annexes) 
+
+Core Missions: Accounting, financial statements, personnel management, IT system management, and purchasing/assets management.
+
+3. Public-Facing Services (Brochure Info)
+These are the specific "products" or services the CCIS offers to companies, which might need to be tracked in your system:
+
+
+Le Développement: Market studies, international prospecting.
+
+
+La Formation: Training adapted to company needs.
+
+
+L'Animation: Local partnerships and territory arrangement projects.
+
+
+L'Assistance: Technical and fiscal assistance via the "Centre de Gestion de Comptabilité Agréé" (CGC).
+
+
+Règlement des différends: Mediation and arbitration via the International Center of Mediation and Arbitration of Rabat.
+
+
+Ouverture Internationale: Partnerships with ASCAME and CPCCAF.
