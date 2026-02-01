@@ -24,15 +24,13 @@ if (isProduction) {
     params: {
       folder: 'ccis-vision/uploads',
       resource_type: 'raw', // Important for non-image files
-      format: async (req, file) => {
-        // Allow xlsx, xls, csv - extract extension
-        const ext = path.extname(file.originalname).substring(1);
-        return ext;
-      },
       public_id: (req, file) => {
         const uniqueName = `${Date.now()}-${file.originalname.replace(/\.[^/.]+$/, '')}`;
         return uniqueName;
       },
+      // Keep original filename extension
+      use_filename: true,
+      unique_filename: false,
     },
   });
 } else {
