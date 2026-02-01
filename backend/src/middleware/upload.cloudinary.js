@@ -23,8 +23,12 @@ if (isProduction) {
     cloudinary: cloudinary,
     params: {
       folder: 'ccis-vision/uploads',
-      allowed_formats: ['xlsx', 'xls', 'csv'],
       resource_type: 'raw', // Important for non-image files
+      format: async (req, file) => {
+        // Allow xlsx, xls, csv - extract extension
+        const ext = path.extname(file.originalname).substring(1);
+        return ext;
+      },
       public_id: (req, file) => {
         const uniqueName = `${Date.now()}-${file.originalname.replace(/\.[^/.]+$/, '')}`;
         return uniqueName;
