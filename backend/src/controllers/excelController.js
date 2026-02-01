@@ -1,6 +1,7 @@
 const XLSX = require('xlsx');
 const fs = require('fs').promises;
 const path = require('path');
+const https = require('https');
 const { query, transaction } = require('../config/database');
 const AppError = require('../utils/AppError');
 const logger = require('../utils/logger');
@@ -12,6 +13,20 @@ const {
   parseExcelDate,
   cleanNumeric,
 } = require('../utils/validators');
+
+/**
+ * Download file from URL to buffer (for Cloudinary)
+ */
+const downloadFileToBuffer = (url) => {
+  return new Promise((resolve, reject) => {
+    https.get(url, (response) => {
+      const chunks = [];
+      response.on('data', (chunk) => chunks.push(chunk));
+      response.on('end', () => resolve(Buffer.concat(chunks)));
+      response.on('error', reject);
+    }).on('error', reject);
+  });
+};
 
 /**
  * Upload and parse Excel file
@@ -26,15 +41,28 @@ const uploadExcelFile = async (req, res, next) => {
     const filePath = req.file.path;
     const fileName = req.file.originalname;
     const fileSize = req.file.size;
+    const isCloudinary = filePath.startsWith('http');
 
-    // Read Excel file
-    const workbook = XLSX.readFile(filePath);
+    // Read Excel file - handle both local and Cloudinary
+    let workbook;
+    if (isCloudinary) {
+      // Download from Cloudinary and read from buffer
+      const buffer = await downloadFileToBuffer(filePath);
+      workbook = XLSX.read(buffer, { type: 'buffer' });
+    } else {
+      // Read local file
+      workbook = XLSX.readFile(filePath);
+    }
+    
     const sheetName = workbook.SheetNames[0];
     const worksheet = workbook.Sheets[sheetName];
     const rawData = XLSX.utils.sheet_to_json(worksheet, { defval: null });
 
     if (rawData.length === 0) {
-      await fs.unlink(filePath); // Delete empty file
+      // Delete file (Cloudinary or local)
+      if (!isCloudinary) {
+        await fs.unlink(filePath);
+      }
       return next(new AppError('Excel file is empty', 400));
     }
 
@@ -73,8 +101,8 @@ const uploadExcelFile = async (req, res, next) => {
       },
     });
   } catch (error) {
-    // Clean up file on error
-    if (req.file) {
+    // Clean up file on error (only for local files, Cloudinary files persist)
+    if (req.file && req.file.path && !req.file.path.startsWith('http')) {
       try {
         await fs.unlink(req.file.path);
       } catch (unlinkError) {
