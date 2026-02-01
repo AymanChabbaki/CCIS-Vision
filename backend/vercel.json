@@ -11,14 +11,5 @@
       "src": "/(.*)",
       "dest": "src/server.js"
     }
-  ],
-  "env": {
-    "NODE_ENV": "production",
-    "VERCEL": "1"
-  },
-  "functions": {
-    "src/server.js": {
-      "maxDuration": 60
-    }
-  }
+  ]
 }
