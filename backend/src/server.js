@@ -77,15 +77,26 @@ app.use(errorHandler);
 // Start server
 const startServer = async () => {
   try {
-    // Test database connection
-    const dbConnected = await testConnection();
-    if (!dbConnected) {
-      logger.error('Failed to connect to database. Exiting...');
-      process.exit(1);
+    // For Vercel serverless, skip blocking database test
+    // Database connection will be tested on first request
+    const isVercel = process.env.VERCEL === '1';
+    
+    if (!isVercel) {
+      // Test database connection only in non-serverless environments
+      const dbConnected = await testConnection();
+      if (!dbConnected) {
+        logger.error('Failed to connect to database. Exiting...');
+        process.exit(1);
+      }
+      
+      // Initialize scheduled jobs for automated alerts (not supported on Vercel)
+      const { initializeScheduledJobs } = require('./jobs/scheduler');
+      initializeScheduledJobs();
+    } else {
+      // On Vercel, just log that we're starting
+      logger.info('Starting in Vercel serverless mode - database will connect on first request');
     }
-    // Initialize scheduled jobs for automated alerts
-    const { initializeScheduledJobs } = require('./jobs/scheduler');
-    initializeScheduledJobs();
+    
     // Start listening
     const PORT = config.port;
     app.listen(PORT, () => {
