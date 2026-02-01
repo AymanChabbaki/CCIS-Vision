@@ -74,32 +74,17 @@ exports.downloadTemplate = async (req, res, next) => {
       });
     }
 
-    const templatesDir = path.join(__dirname, '../../uploads/templates');
-    const templateFiles = {
-      companies: 'Template_Import_Entreprises.xlsx',
-      activities: 'Template_Import_Activites.xlsx',
-      budgets: 'Template_Import_Budgets.xlsx',
-      participants: 'Template_Import_Participants.xlsx'
+    // Cloudinary URLs for templates
+    const cloudinaryUrls = {
+      companies: 'https://res.cloudinary.com/dqn8k0w2y/raw/upload/v1769986741/Template_Import_Entreprises_io34ar.xlsx',
+      activities: 'https://res.cloudinary.com/dqn8k0w2y/raw/upload/v1769986741/Template_Import_Activites_guzpyg.xlsx',
+      budgets: 'https://res.cloudinary.com/dqn8k0w2y/raw/upload/v1769986741/Template_Import_Budgets_nriycn.xlsx',
+      participants: 'https://res.cloudinary.com/dqn8k0w2y/raw/upload/v1769986741/Template_Import_Participants_dndkox.xlsx'
     };
-    const fileName = templateFiles[type];
-    const filePath = path.join(templatesDir, fileName);
 
-    // Check if file exists
-    try {
-      await fs.access(filePath);
-    } catch (error) {
-      return res.status(404).json({
-        status: 'fail',
-        message: 'Modèle non trouvé'
-      });
-    }
-
-    // Send file
-    res.download(filePath, fileName, (err) => {
-      if (err) {
-        next(err);
-      }
-    });
+    // Redirect to Cloudinary URL for download
+    const downloadUrl = cloudinaryUrls[type];
+    res.redirect(downloadUrl);
 
   } catch (error) {
     next(error);
