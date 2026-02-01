@@ -3,10 +3,17 @@ const path = require('path');
 const fs = require('fs');
 const config = require('../config');
 
-// Create logs directory if it doesn't exist
-const logsDir = path.join(__dirname, '../../logs');
-if (!fs.existsSync(logsDir)) {
-  fs.mkdirSync(logsDir, { recursive: true });
+// Check if we're in production (Vercel) - no file logging
+const isProduction = process.env.NODE_ENV === 'production';
+const isVercel = process.env.VERCEL === '1';
+
+// Only create logs directory for local development
+let logsDir;
+if (!isProduction && !isVercel) {
+  logsDir = path.join(__dirname, '../../logs');
+  if (!fs.existsSync(logsDir)) {
+    fs.mkdirSync(logsDir, { recursive: true });
+  }
 }
 
 // Define log format
@@ -30,36 +37,40 @@ const consoleFormat = winston.format.combine(
   })
 );
 
-// Create logger instance
-const logger = winston.createLogger({
-  level: config.logging.level,
-  format: logFormat,
-  defaultMeta: { service: 'ccis-vision-api' },
-  transports: [
-    // Write all logs to combined.log
+// Create transports array
+const transports = [];
+
+// File transports only for local development
+if (!isProduction && !isVercel && logsDir) {
+  transports.push(
     new winston.transports.File({
       filename: path.join(logsDir, 'combined.log'),
       maxsize: 5242880, // 5MB
       maxFiles: 5,
     }),
-    // Write errors to error.log
     new winston.transports.File({
       filename: path.join(logsDir, 'error.log'),
       level: 'error',
       maxsize: 5242880,
       maxFiles: 5,
-    }),
-  ],
-});
-
-// Add console transport for development
-if (config.env !== 'production') {
-  logger.add(
-    new winston.transports.Console({
-      format: consoleFormat,
     })
   );
 }
+
+// Console transport for all environments
+transports.push(
+  new winston.transports.Console({
+    format: isProduction ? logFormat : consoleFormat,
+  })
+);
+
+// Create logger instance
+const logger = winston.createLogger({
+  level: config.logging.level,
+  format: logFormat,
+  defaultMeta: { service: 'ccis-vision-api' },
+  transports: transports,
+});
 
 // Create stream for Morgan HTTP logger
 logger.stream = {
