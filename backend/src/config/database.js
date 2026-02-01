@@ -1,17 +1,34 @@
 const { Pool } = require('pg');
 const logger = require('../utils/logger');
 
+// Check if DATABASE_URL is provided (production, Neon/Supabase)
+const isProduction = process.env.NODE_ENV === 'production';
+const databaseUrl = process.env.DATABASE_URL;
+
 // PostgreSQL connection pool configuration
-const pool = new Pool({
-  host: process.env.DB_HOST || 'localhost',
-  port: process.env.DB_PORT || 5432,
-  database: process.env.DB_NAME || 'ccis_vision',
-  user: process.env.DB_USER || 'postgres',
-  password: process.env.DB_PASSWORD,
-  max: 20, // Maximum number of clients in the pool
-  idleTimeoutMillis: 30000,
-  connectionTimeoutMillis: 2000,
-});
+// For Vercel serverless: use max: 1 connection to avoid pool exhaustion
+const pool = new Pool(
+  databaseUrl
+    ? {
+        connectionString: databaseUrl,
+        ssl: {
+          rejectUnauthorized: false,
+        },
+        max: isProduction ? 1 : 20, // 1 connection for serverless, 20 for local
+        idleTimeoutMillis: 30000,
+        connectionTimeoutMillis: 10000,
+      }
+    : {
+        host: process.env.DB_HOST || 'localhost',
+        port: process.env.DB_PORT || 5432,
+        database: process.env.DB_NAME || 'ccis_vision',
+        user: process.env.DB_USER || 'postgres',
+        password: process.env.DB_PASSWORD,
+        max: 20,
+        idleTimeoutMillis: 30000,
+        connectionTimeoutMillis: 2000,
+      }
+);
 
 // Test database connection
 pool.on('connect', () => {

@@ -4,7 +4,7 @@ const Joi = require('joi');
 const excelController = require('../controllers/excelController');
 const { authenticate } = require('../middleware/auth');
 const { canImport } = require('../middleware/authorize');
-const upload = require('../middleware/upload');
+const upload = require('../middleware/upload.cloudinary');
 const validate = require('../middleware/validate');
 
 // Validation schemas
