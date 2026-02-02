@@ -4,10 +4,20 @@ const KpiController = require('../controllers/kpiController');
 const { authenticateToken } = require('../middleware/auth');
 const { isAdmin } = require('../middleware/authorize');
 
+// Detailed diagnostic logging
+console.log('=== KPI Routes Loading ===');
+console.log('KpiController type:', typeof KpiController);
+console.log('KpiController is null?', KpiController === null);
+console.log('KpiController is undefined?', KpiController === undefined);
+console.log('KpiController.constructor.name:', KpiController?.constructor?.name);
+console.log('KpiController.getPeriods type:', typeof KpiController?.getPeriods);
+console.log('KpiController methods:', KpiController ? Object.getOwnPropertyNames(KpiController).filter(m => typeof KpiController[m] === 'function') : 'N/A');
+
 // Verify controller loaded correctly
 if (!KpiController || !KpiController.getPeriods) {
-  console.error('CRITICAL ERROR: KpiController not loaded properly!');
+  console.error('❌ CRITICAL ERROR: KpiController not loaded properly!');
   console.error('KpiController:', KpiController);
+  throw new Error('KpiController.getPeriods is undefined - cannot create routes');
 }
 
 // ============================================================================
