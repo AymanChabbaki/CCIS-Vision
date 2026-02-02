@@ -1,6 +1,33 @@
-const KpiPeriodModel = require('../models/kpiPeriodModel');
-const KpiAuditControlModel = require('../models/kpiAuditControlModel');
-const KpiModel = require('../models/kpiModel');
+let KpiPeriodModel, KpiAuditControlModel, KpiModel;
+let modelsLoaded = true;
+
+try {
+  KpiPeriodModel = require('../models/kpiPeriodModel');
+  console.log('✓ KpiPeriodModel loaded successfully');
+} catch (error) {
+  console.error('✗ ERROR loading KpiPeriodModel:', error.message, error.stack);
+  modelsLoaded = false;
+}
+
+try {
+  KpiAuditControlModel = require('../models/kpiAuditControlModel');
+  console.log('✓ KpiAuditControlModel loaded successfully');
+} catch (error) {
+  console.error('✗ ERROR loading KpiAuditControlModel:', error.message, error.stack);
+  modelsLoaded = false;
+}
+
+try {
+  KpiModel = require('../models/kpiModel');
+  console.log('✓ KpiModel loaded successfully');
+} catch (error) {
+  console.error('✗ ERROR loading KpiModel:', error.message, error.stack);
+  modelsLoaded = false;
+}
+
+if (!modelsLoaded) {
+  console.error('⚠️  WARNING: Some KPI models failed to load. Controller methods may not work.');
+}
 
 class KpiController {
   // ============================================================================
