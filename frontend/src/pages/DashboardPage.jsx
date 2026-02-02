@@ -626,15 +626,16 @@ export const DashboardPage = () => {
             <select
               value={selectedPeriod?.id || ''}
               onChange={(e) => {
-                const period = periods.find(p => p.id === parseInt(e.target.value));
+                const period = periods.find(p => p.id === e.target.value);
                 setSelectedPeriod(period);
               }}
-              className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+              className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-white"
+              style={{ minWidth: '200px' }}
             >
               <option value="">Sélectionner une période</option>
               {periods.map(period => (
                 <option key={period.id} value={period.id}>
-                  {period.label} {period.is_active && '(Actif)'}
+                  {period.name} {period.is_active ? '(Actif)' : ''}
                 </option>
               ))}
             </select>

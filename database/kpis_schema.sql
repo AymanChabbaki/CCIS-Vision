@@ -263,7 +263,111 @@ INSERT INTO kpi_periods (name, type, start_date, end_date, is_active) VALUES
 ('Q2 2026', 'quarterly', '2026-04-01', '2026-06-30', FALSE),
 ('Q3 2026', 'quarterly', '2026-07-01', '2026-09-30', FALSE),
 ('Q4 2026', 'quarterly', '2026-10-01', '2026-12-31', FALSE),
-('Année 2026', 'annual', '2026-01-01', '2026-12-31', TRUE);
+('Année 2026', 'annual', '2026-01-01', '2026-12-31', TRUE)
+ON CONFLICT (type, start_date, end_date) DO NOTHING;
+
+-- ============================================================================
+-- SAMPLE KPI DATA for Q1 2026
+-- ============================================================================
+
+-- Get the Q1 2026 period ID
+DO $$
+DECLARE
+    v_period_id UUID;
+    v_user_id UUID;
+BEGIN
+    -- Get the period ID for Q1 2026
+    SELECT id INTO v_period_id FROM kpi_periods WHERE name = 'Q1 2026' LIMIT 1;
+    
+    -- Get a user ID (first admin user or any user)
+    SELECT id INTO v_user_id FROM users WHERE role_id = (SELECT id FROM roles WHERE name = 'Admin' LIMIT 1) LIMIT 1;
+    IF v_user_id IS NULL THEN
+        SELECT id INTO v_user_id FROM users LIMIT 1;
+    END IF;
+    
+    -- Insert Audit Control KPIs
+    INSERT INTO kpi_audit_control (period_id, nombre_rapports_gestion, nombre_tableaux_bord, nombre_missions_audit, taux_mise_en_oeuvre_recommandations, nombre_procedures_ameliorees, created_by, notes)
+    VALUES (v_period_id, 12, 8, 5, 85.50, 7, v_user_id, 'Q1 2026: Excellent progress on audit missions and recommendations')
+    ON CONFLICT (period_id) DO UPDATE SET
+        nombre_rapports_gestion = EXCLUDED.nombre_rapports_gestion,
+        nombre_tableaux_bord = EXCLUDED.nombre_tableaux_bord,
+        nombre_missions_audit = EXCLUDED.nombre_missions_audit,
+        taux_mise_en_oeuvre_recommandations = EXCLUDED.taux_mise_en_oeuvre_recommandations,
+        nombre_procedures_ameliorees = EXCLUDED.nombre_procedures_ameliorees,
+        updated_at = CURRENT_TIMESTAMP;
+    
+    -- Insert Relations Institutionnelles KPIs
+    INSERT INTO kpi_relations_institutionnelles (period_id, conventions_signees, partenariats_actifs, reunions_strategiques, actions_lobbying, satisfaction_partenaires, created_by, notes)
+    VALUES (v_period_id, 6, 15, 18, 12, 88.00, v_user_id, 'Q1 2026: Strong partnership development')
+    ON CONFLICT (period_id) DO UPDATE SET
+        conventions_signees = EXCLUDED.conventions_signees,
+        partenariats_actifs = EXCLUDED.partenariats_actifs,
+        reunions_strategiques = EXCLUDED.reunions_strategiques,
+        actions_lobbying = EXCLUDED.actions_lobbying,
+        satisfaction_partenaires = EXCLUDED.satisfaction_partenaires,
+        updated_at = CURRENT_TIMESTAMP;
+    
+    -- Insert Synthèse Départements KPIs
+    INSERT INTO kpi_synthese_departements (period_id, nombre_projets_realises, taux_realisation_objectifs, nombre_formations_organisees, nombre_participants_formations, created_by, notes)
+    VALUES (v_period_id, 24, 82.50, 14, 320, v_user_id, 'Q1 2026: Successful training programs')
+    ON CONFLICT (period_id) DO UPDATE SET
+        nombre_projets_realises = EXCLUDED.nombre_projets_realises,
+        taux_realisation_objectifs = EXCLUDED.taux_realisation_objectifs,
+        nombre_formations_organisees = EXCLUDED.nombre_formations_organisees,
+        nombre_participants_formations = EXCLUDED.nombre_participants_formations,
+        updated_at = CURRENT_TIMESTAMP;
+    
+    -- Insert Admin Financier KPIs
+    INSERT INTO kpi_admin_financier (period_id, budget_alloue, budget_consomme, taux_execution_budgetaire, nombre_factures_traitees, delai_moyen_paiement, nombre_marches_publics, taux_conformite_procedures, created_by, notes)
+    VALUES (v_period_id, 5000000.00, 3750000.00, 75.00, 156, 25, 8, 95.50, v_user_id, 'Q1 2026: Budget execution on track')
+    ON CONFLICT (period_id) DO UPDATE SET
+        budget_alloue = EXCLUDED.budget_alloue,
+        budget_consomme = EXCLUDED.budget_consomme,
+        taux_execution_budgetaire = EXCLUDED.taux_execution_budgetaire,
+        nombre_factures_traitees = EXCLUDED.nombre_factures_traitees,
+        delai_moyen_paiement = EXCLUDED.delai_moyen_paiement,
+        nombre_marches_publics = EXCLUDED.nombre_marches_publics,
+        taux_conformite_procedures = EXCLUDED.taux_conformite_procedures,
+        updated_at = CURRENT_TIMESTAMP;
+    
+    -- Insert Appui Promotion KPIs
+    INSERT INTO kpi_appui_promotion (period_id, nombre_entreprises_accompagnees, missions_economiques_organisees, salons_participations, investissements_generes, emplois_crees, entreprises_inscrites, entreprises_inscrites_secteur_cible, entreprises_actives, entreprises_radiation_volontaire, entreprises_radiees, entreprises_beneficiaires_services, created_by, notes)
+    VALUES (v_period_id, 85, 4, 7, 12500000.00, 145, 92, 67, 520, 8, 12, 78, v_user_id, 'Q1 2026: Strong business support and job creation')
+    ON CONFLICT (period_id) DO UPDATE SET
+        nombre_entreprises_accompagnees = EXCLUDED.nombre_entreprises_accompagnees,
+        missions_economiques_organisees = EXCLUDED.missions_economiques_organisees,
+        salons_participations = EXCLUDED.salons_participations,
+        investissements_generes = EXCLUDED.investissements_generes,
+        emplois_crees = EXCLUDED.emplois_crees,
+        entreprises_inscrites = EXCLUDED.entreprises_inscrites,
+        entreprises_inscrites_secteur_cible = EXCLUDED.entreprises_inscrites_secteur_cible,
+        entreprises_actives = EXCLUDED.entreprises_actives,
+        entreprises_radiation_volontaire = EXCLUDED.entreprises_radiation_volontaire,
+        entreprises_radiees = EXCLUDED.entreprises_radiees,
+        entreprises_beneficiaires_services = EXCLUDED.entreprises_beneficiaires_services,
+        updated_at = CURRENT_TIMESTAMP;
+    
+    -- Insert Services Ressortissants KPIs
+    INSERT INTO kpi_services_ressortissants (period_id, newsletters_editees, demandes_ressortissants, indicateurs_economiques_suivis, created_by, notes)
+    VALUES (v_period_id, 12, 156, 24, v_user_id, 'Q1 2026: Comprehensive support to nationals abroad')
+    ON CONFLICT (period_id) DO UPDATE SET
+        newsletters_editees = EXCLUDED.newsletters_editees,
+        demandes_ressortissants = EXCLUDED.demandes_ressortissants,
+        indicateurs_economiques_suivis = EXCLUDED.indicateurs_economiques_suivis,
+        updated_at = CURRENT_TIMESTAMP;
+    
+    -- Insert Stratégie Partenariat KPIs
+    INSERT INTO kpi_strategie_partenariat (period_id, actions_realisees, ressortissants_satisfaits_evenements, entreprises_potentiel_export, entreprises_accompagnees, delegations, opportunites_affaires_internationales, created_by, notes)
+    VALUES (v_period_id, 28, 92, 45, 67, 11, 34, v_user_id, 'Q1 2026: Strong international business development')
+    ON CONFLICT (period_id) DO UPDATE SET
+        actions_realisees = EXCLUDED.actions_realisees,
+        ressortissants_satisfaits_evenements = EXCLUDED.ressortissants_satisfaits_evenements,
+        entreprises_potentiel_export = EXCLUDED.entreprises_potentiel_export,
+        entreprises_accompagnees = EXCLUDED.entreprises_accompagnees,
+        delegations = EXCLUDED.delegations,
+        opportunites_affaires_internationales = EXCLUDED.opportunites_affaires_internationales,
+        updated_at = CURRENT_TIMESTAMP;
+END $$;
 
 -- ============================================================================
 -- VIEWS for easy reporting
