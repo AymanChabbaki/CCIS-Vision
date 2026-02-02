@@ -10,7 +10,25 @@ const dashboardRoutes = require('./dashboard.routes');
 const alertRoutes = require('./alert.routes');
 const userRoutes = require('./user.routes');
 const chatbotRoutes = require('./chatbot.routes');
-const kpiRoutes = require('./kpiRoutes');
+
+// Try to import KPI routes with error handling
+let kpiRoutes;
+try {
+  kpiRoutes = require('./kpiRoutes');
+} catch (error) {
+  console.error('ERROR: Failed to load KPI routes:', error.message);
+  console.error('Stack:', error.stack);
+  // Create a dummy router that returns an error message
+  const express = require('express');
+  kpiRoutes = express.Router();
+  kpiRoutes.all('*', (req, res) => {
+    res.status(503).json({
+      status: 'error',
+      message: 'KPI routes failed to load',
+      error: error.message
+    });
+  });
+}
 
 // Mount routes
 router.use('/auth', authRoutes);
