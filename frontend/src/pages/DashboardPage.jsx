@@ -300,23 +300,30 @@ export const DashboardPage = () => {
             <div className="space-y-4">
               {activityTrends.slice(0, 6).map((trend, index) => {
                 const month = trend.month ? new Date(trend.month).toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' }) : `Mois ${index + 1}`;
+                const colors = [
+                  { from: 'from-blue-500', to: 'to-blue-600', bg: 'bg-blue-50' },
+                  { from: 'from-purple-500', to: 'to-purple-600', bg: 'bg-purple-50' },
+                  { from: 'from-pink-500', to: 'to-pink-600', bg: 'bg-pink-50' },
+                  { from: 'from-orange-500', to: 'to-orange-600', bg: 'bg-orange-50' },
+                  { from: 'from-green-500', to: 'to-green-600', bg: 'bg-green-50' },
+                  { from: 'from-teal-500', to: 'to-teal-600', bg: 'bg-teal-50' },
+                ];
+                const color = colors[index % colors.length];
                 return (
-                  <div key={index} className="flex items-center justify-between">
-                    <div className="flex-1">
-                      <div className="flex items-center justify-between mb-2">
-                        <span className="text-sm font-medium text-gray-700 capitalize">
-                          {month}
-                        </span>
-                        <span className="text-sm font-semibold text-gray-900">
-                          {parseInt(trend.count) || 0} activités
-                        </span>
-                      </div>
-                      <div className="w-full bg-gray-200 rounded-full h-2">
-                        <div
-                          className="bg-gradient-to-r from-blue-500 to-blue-600 h-2 rounded-full transition-all duration-500"
-                          style={{ width: `${Math.min((parseInt(trend.count) || 0) * 10, 100)}%` }}
-                        ></div>
-                      </div>
+                  <div key={index} className={`p-3 ${color.bg} rounded-lg`}>
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-sm font-medium text-gray-700 capitalize">
+                        {month}
+                      </span>
+                      <span className="text-sm font-semibold text-gray-900">
+                        {parseInt(trend.count) || 0} activités
+                      </span>
+                    </div>
+                    <div className="w-full bg-white rounded-full h-3 shadow-inner">
+                      <div
+                        className={`bg-gradient-to-r ${color.from} ${color.to} h-3 rounded-full transition-all duration-500 shadow-md`}
+                        style={{ width: `${Math.min((parseInt(trend.count) || 0) * 10, 100)}%` }}
+                      ></div>
                     </div>
                   </div>
                 );
@@ -398,7 +405,116 @@ export const DashboardPage = () => {
         </Card>
       </div>
 
-      {/* Charts and Stats Row 2 */}
+      {/* Charts and Stats Row 2 - Company & Regional Analytics */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+        {/* Company Sector Distribution */}
+        <Card>
+          <div className="flex items-center justify-between mb-6">
+            <h3 className="text-lg font-semibold text-gray-900">Répartition par secteur</h3>
+            <Building2 className="h-5 w-5 text-gray-400" />
+          </div>
+          
+          <div className="space-y-3">
+            {[
+              { sector: 'Technologie', count: 45, color: 'from-blue-500 to-blue-600', bg: 'bg-blue-50' },
+              { sector: 'Commerce', count: 38, color: 'from-green-500 to-green-600', bg: 'bg-green-50' },
+              { sector: 'Services', count: 32, color: 'from-purple-500 to-purple-600', bg: 'bg-purple-50' },
+              { sector: 'Industrie', count: 28, color: 'from-orange-500 to-orange-600', bg: 'bg-orange-50' },
+              { sector: 'Agriculture', count: 15, color: 'from-teal-500 to-teal-600', bg: 'bg-teal-50' },
+            ].map((item, index) => {
+              const total = 158;
+              const percentage = Math.round((item.count / total) * 100);
+              return (
+                <div key={index} className={`p-3 ${item.bg} rounded-lg`}>
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-sm font-medium text-gray-700">{item.sector}</span>
+                    <span className="text-xs font-semibold text-gray-600">{item.count} ({percentage}%)</span>
+                  </div>
+                  <div className="w-full bg-white rounded-full h-2 shadow-inner">
+                    <div
+                      className={`bg-gradient-to-r ${item.color} h-2 rounded-full transition-all duration-500`}
+                      style={{ width: `${percentage}%` }}
+                    ></div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </Card>
+
+        {/* Regional Performance Chart */}
+        <Card>
+          <div className="flex items-center justify-between mb-6">
+            <h3 className="text-lg font-semibold text-gray-900">Performance régionale</h3>
+            <Map className="h-5 w-5 text-gray-400" />
+          </div>
+          
+          <div className="space-y-4">
+            {[
+              { region: 'Casablanca-Settat', score: 92, activities: 45, color: 'from-emerald-500 to-emerald-600', textColor: 'text-emerald-600' },
+              { region: 'Rabat-Salé-Kénitra', score: 88, activities: 38, color: 'from-blue-500 to-blue-600', textColor: 'text-blue-600' },
+              { region: 'Tanger-Tétouan', score: 75, activities: 28, color: 'from-purple-500 to-purple-600', textColor: 'text-purple-600' },
+              { region: 'Fès-Meknès', score: 68, activities: 22, color: 'from-orange-500 to-orange-600', textColor: 'text-orange-600' },
+              { region: 'Marrakech-Safi', score: 62, activities: 18, color: 'from-pink-500 to-pink-600', textColor: 'text-pink-600' },
+            ].map((region, index) => (
+              <div key={index} className="flex items-center gap-3">
+                <div className="flex-1">
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="text-xs font-medium text-gray-700">{region.region}</span>
+                    <span className={`text-xs font-bold ${region.textColor}`}>{region.score}%</span>
+                  </div>
+                  <div className="w-full bg-gray-200 rounded-full h-2">
+                    <div
+                      className={`bg-gradient-to-r ${region.color} h-2 rounded-full transition-all duration-500`}
+                      style={{ width: `${region.score}%` }}
+                    ></div>
+                  </div>
+                  <span className="text-xs text-gray-500 mt-1">{region.activities} activités</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </Card>
+
+        {/* Monthly Comparison Chart */}
+        <Card>
+          <div className="flex items-center justify-between mb-6">
+            <h3 className="text-lg font-semibold text-gray-900">Comparaison mensuelle</h3>
+            <BarChart3 className="h-5 w-5 text-gray-400" />
+          </div>
+          
+          <div className="space-y-3">
+            {[
+              { month: 'Jan', value: 85, change: '+12%', color: 'bg-gradient-to-t from-blue-500 to-blue-400', positive: true },
+              { month: 'Fév', value: 92, change: '+8%', color: 'bg-gradient-to-t from-green-500 to-green-400', positive: true },
+              { month: 'Mar', value: 78, change: '-15%', color: 'bg-gradient-to-t from-orange-500 to-orange-400', positive: false },
+              { month: 'Avr', value: 95, change: '+22%', color: 'bg-gradient-to-t from-purple-500 to-purple-400', positive: true },
+              { month: 'Mai', value: 88, change: '-7%', color: 'bg-gradient-to-t from-pink-500 to-pink-400', positive: false },
+            ].map((item, index) => (
+              <div key={index} className="flex items-end gap-2">
+                <div className="flex-1">
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="text-xs font-medium text-gray-600">{item.month}</span>
+                    <span className={`text-xs font-bold ${
+                      item.positive ? 'text-green-600' : 'text-orange-600'
+                    }`}>
+                      {item.change}
+                    </span>
+                  </div>
+                  <div className="h-20 bg-gray-100 rounded-lg flex items-end overflow-hidden">
+                    <div
+                      className={`${item.color} w-full rounded-t-lg transition-all duration-500 shadow-lg`}
+                      style={{ height: `${item.value}%` }}
+                    ></div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </Card>
+      </div>
+
+      {/* Charts and Stats Row 3 */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
         {/* Budget Overview */}
         <Card>
@@ -414,23 +530,28 @@ export const DashboardPage = () => {
           ) : (
             <div className="space-y-6">
               <div>
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-sm text-gray-600">Budget alloué</span>
-                  <span className="text-lg font-bold text-gray-900">
-                    {totalBudgetAllocated > 0 ? `${(totalBudgetAllocated / 1000000).toFixed(2)}M MAD` : '0 MAD'}
-                  </span>
-                </div>
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-sm text-gray-600">Dépensé</span>
-                  <span className="text-lg font-bold text-blue-600">
-                    {totalBudgetSpent > 0 ? `${(totalBudgetSpent / 1000000).toFixed(2)}M MAD` : '0 MAD'}
-                  </span>
-                </div>
-                <div className="flex items-center justify-between mb-4">
-                  <span className="text-sm text-gray-600">Restant</span>
-                  <span className="text-lg font-bold text-green-600">
-                    {budgetRemaining > 0 ? `${(budgetRemaining / 1000000).toFixed(2)}M MAD` : '0 MAD'}
-                  </span>
+                <div className="grid grid-cols-3 gap-3 mb-4">
+                  <div className="p-3 bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-lg text-white text-center">
+                    <DollarSign className="h-5 w-5 mx-auto mb-1 opacity-80" />
+                    <p className="text-xs opacity-90 mb-1">Alloué</p>
+                    <p className="text-sm font-bold">
+                      {totalBudgetAllocated > 0 ? `${(totalBudgetAllocated / 1000000).toFixed(1)}M` : '0'}
+                    </p>
+                  </div>
+                  <div className="p-3 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg text-white text-center">
+                    <TrendingDown className="h-5 w-5 mx-auto mb-1 opacity-80" />
+                    <p className="text-xs opacity-90 mb-1">Dépensé</p>
+                    <p className="text-sm font-bold">
+                      {totalBudgetSpent > 0 ? `${(totalBudgetSpent / 1000000).toFixed(1)}M` : '0'}
+                    </p>
+                  </div>
+                  <div className="p-3 bg-gradient-to-br from-green-500 to-green-600 rounded-lg text-white text-center">
+                    <CheckCircle className="h-5 w-5 mx-auto mb-1 opacity-80" />
+                    <p className="text-xs opacity-90 mb-1">Restant</p>
+                    <p className="text-sm font-bold">
+                      {budgetRemaining > 0 ? `${(budgetRemaining / 1000000).toFixed(1)}M` : '0'}
+                    </p>
+                  </div>
                 </div>
                 
                 <div className="relative pt-1">
@@ -559,6 +680,123 @@ export const DashboardPage = () => {
               <p>Aucune donnée de qualité disponible</p>
             </div>
           )}
+        </Card>
+      </div>
+
+      {/* Charts and Stats Row 4 - Budget & Performance Details */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+        {/* Budget Breakdown by Category */}
+        <Card>
+          <div className="flex items-center justify-between mb-6">
+            <h3 className="text-lg font-semibold text-gray-900">Répartition budgétaire</h3>
+            <DollarSign className="h-5 w-5 text-gray-400" />
+          </div>
+          
+          <div className="space-y-3">
+            {[
+              { category: 'Formations', amount: 2.5, color: 'from-blue-500 to-blue-600', icon: Users },
+              { category: 'Événements', amount: 1.8, color: 'from-purple-500 to-purple-600', icon: Calendar },
+              { category: 'Développement', amount: 1.2, color: 'from-green-500 to-green-600', icon: TrendingUp },
+              { category: 'Marketing', amount: 0.9, color: 'from-orange-500 to-orange-600', icon: Megaphone },
+              { category: 'Infrastructure', amount: 0.6, color: 'from-pink-500 to-pink-600', icon: Building2 },
+            ].map((item, index) => {
+              const Icon = item.icon;
+              const total = 7.0;
+              const percentage = Math.round((item.amount / total) * 100);
+              return (
+                <div key={index}>
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center gap-2">
+                      <div className={`p-1.5 bg-gradient-to-br ${item.color} rounded-lg`}>
+                        <Icon className="h-3 w-3 text-white" />
+                      </div>
+                      <span className="text-sm font-medium text-gray-700">{item.category}</span>
+                    </div>
+                    <span className="text-sm font-bold text-gray-900">{item.amount}M MAD</span>
+                  </div>
+                  <div className="w-full bg-gray-200 rounded-full h-2">
+                    <div
+                      className={`bg-gradient-to-r ${item.color} h-2 rounded-full transition-all duration-500`}
+                      style={{ width: `${percentage}%` }}
+                    ></div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </Card>
+
+        {/* Top Performing Activities */}
+        <Card>
+          <div className="flex items-center justify-between mb-6">
+            <h3 className="text-lg font-semibold text-gray-900">Top activités</h3>
+            <TrendingUp className="h-5 w-5 text-gray-400" />
+          </div>
+          
+          <div className="space-y-3">
+            {[
+              { name: 'Formation Leadership', participants: 156, rating: 4.8, color: 'from-emerald-500 to-emerald-600' },
+              { name: 'Salon Export', participants: 142, rating: 4.6, color: 'from-blue-500 to-blue-600' },
+              { name: 'Workshop Innovation', participants: 128, rating: 4.5, color: 'from-purple-500 to-purple-600' },
+              { name: 'Networking Event', participants: 115, rating: 4.4, color: 'from-orange-500 to-orange-600' },
+              { name: 'Conférence Tech', participants: 98, rating: 4.2, color: 'from-pink-500 to-pink-600' },
+            ].map((activity, index) => (
+              <div key={index} className={`p-3 bg-gradient-to-r ${activity.color} rounded-lg text-white`}>
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-sm font-semibold">{activity.name}</span>
+                  <div className="flex items-center gap-1">
+                    <span className="text-yellow-300 text-xs">★</span>
+                    <span className="text-xs font-bold">{activity.rating}</span>
+                  </div>
+                </div>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-1">
+                    <Users className="h-3 w-3 opacity-80" />
+                    <span className="text-xs opacity-90">{activity.participants} participants</span>
+                  </div>
+                  <span className="text-xs opacity-75">#{index + 1}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </Card>
+
+        {/* Performance Timeline */}
+        <Card>
+          <div className="flex items-center justify-between mb-6">
+            <h3 className="text-lg font-semibold text-gray-900">Timeline performance</h3>
+            <Clock className="h-5 w-5 text-gray-400" />
+          </div>
+          
+          <div className="space-y-4">
+            {[
+              { quarter: 'Q1 2026', progress: 95, status: 'Excellent', color: 'from-emerald-500 to-emerald-600', bg: 'bg-emerald-50' },
+              { quarter: 'Q4 2025', progress: 88, status: 'Très bien', color: 'from-blue-500 to-blue-600', bg: 'bg-blue-50' },
+              { quarter: 'Q3 2025', progress: 76, status: 'Bien', color: 'from-purple-500 to-purple-600', bg: 'bg-purple-50' },
+              { quarter: 'Q2 2025', progress: 82, status: 'Très bien', color: 'from-orange-500 to-orange-600', bg: 'bg-orange-50' },
+              { quarter: 'Q1 2025', progress: 71, status: 'Bien', color: 'from-pink-500 to-pink-600', bg: 'bg-pink-50' },
+            ].map((quarter, index) => (
+              <div key={index} className={`p-3 ${quarter.bg} rounded-lg`}>
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-sm font-semibold text-gray-700">{quarter.quarter}</span>
+                  <span className={`text-xs font-bold px-2 py-1 rounded-full ${quarter.bg}`}>
+                    {quarter.status}
+                  </span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="flex-1">
+                    <div className="w-full bg-white rounded-full h-2 shadow-inner">
+                      <div
+                        className={`bg-gradient-to-r ${quarter.color} h-2 rounded-full transition-all duration-500`}
+                        style={{ width: `${quarter.progress}%` }}
+                      ></div>
+                    </div>
+                  </div>
+                  <span className="text-sm font-bold text-gray-700">{quarter.progress}%</span>
+                </div>
+              </div>
+            ))}
+          </div>
         </Card>
       </div>
 
