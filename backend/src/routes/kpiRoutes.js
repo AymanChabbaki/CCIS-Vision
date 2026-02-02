@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const KpiController = require('../controllers/kpiController');
 const { authenticateToken } = require('../middleware/auth');
-const { isAdmin, canModify } = require('../middleware/authorize');
+const { isAdmin} = require('../middleware/authorize');
 
 // ============================================================================
 // PERIODS ROUTES
