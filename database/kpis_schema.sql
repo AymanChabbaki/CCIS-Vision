@@ -259,6 +259,7 @@ CREATE TRIGGER update_strategie_partenariat_timestamp
 
 -- Insert current year quarters
 INSERT INTO kpi_periods (name, type, start_date, end_date, is_active) VALUES
+('Février 2026', 'monthly', '2026-02-01', '2026-02-28', TRUE),
 ('Q1 2026', 'quarterly', '2026-01-01', '2026-03-31', TRUE),
 ('Q2 2026', 'quarterly', '2026-04-01', '2026-06-30', FALSE),
 ('Q3 2026', 'quarterly', '2026-07-01', '2026-09-30', FALSE),

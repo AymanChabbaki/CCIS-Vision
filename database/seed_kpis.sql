@@ -14,7 +14,7 @@
 
 INSERT INTO kpi_periods (name, type, start_date, end_date, is_active) VALUES
 ('Janvier 2026', 'monthly', '2026-01-01', '2026-01-31', FALSE),
-('Février 2026', 'monthly', '2026-02-01', '2026-02-29', TRUE),
+('Février 2026', 'monthly', '2026-02-01', '2026-02-28', TRUE),
 ('Mars 2026', 'monthly', '2026-03-01', '2026-03-31', FALSE),
 ('Q1 2026', 'quarterly', '2026-01-01', '2026-03-31', TRUE),
 ('Q2 2026', 'quarterly', '2026-04-01', '2026-06-30', FALSE),
