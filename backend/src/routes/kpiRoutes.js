@@ -12,6 +12,8 @@ console.log('KpiController is undefined?', KpiController === undefined);
 console.log('KpiController.constructor.name:', KpiController?.constructor?.name);
 console.log('KpiController.getPeriods type:', typeof KpiController?.getPeriods);
 console.log('KpiController methods:', KpiController ? Object.getOwnPropertyNames(KpiController).filter(m => typeof KpiController[m] === 'function') : 'N/A');
+console.log('authenticateToken type:', typeof authenticateToken);
+console.log('isAdmin type:', typeof isAdmin);
 
 // Verify controller loaded correctly
 if (!KpiController || !KpiController.getPeriods) {
@@ -25,6 +27,11 @@ if (!KpiController || !KpiController.getPeriods) {
 // ============================================================================
 
 // Get all periods
+console.log('About to register /periods route with:', {
+  authenticateToken: typeof authenticateToken,
+  getPeriods: typeof KpiController.getPeriods,
+  actualGetPeriods: KpiController.getPeriods
+});
 router.get('/periods', authenticateToken, KpiController.getPeriods);
 
 // Get active period
