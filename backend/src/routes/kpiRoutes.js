@@ -2,7 +2,13 @@ const express = require('express');
 const router = express.Router();
 const KpiController = require('../controllers/kpiController');
 const { authenticateToken } = require('../middleware/auth');
-const { isAdmin} = require('../middleware/authorize');
+const { isAdmin } = require('../middleware/authorize');
+
+// Verify controller loaded correctly
+if (!KpiController || !KpiController.getPeriods) {
+  console.error('CRITICAL ERROR: KpiController not loaded properly!');
+  console.error('KpiController:', KpiController);
+}
 
 // ============================================================================
 // PERIODS ROUTES
