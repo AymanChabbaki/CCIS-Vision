@@ -1,0 +1,274 @@
+.kpis-page {
+  padding: 20px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+.page-header h1 {
+  font-size: 28px;
+  color: #2c3e50;
+  margin: 0;
+}
+
+.period-selector {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.period-selector label {
+  font-weight: 600;
+  color: #555;
+}
+
+.period-selector select {
+  padding: 8px 15px;
+  border: 2px solid #3498db;
+  border-radius: 6px;
+  font-size: 14px;
+  background-color: white;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.period-selector select:hover {
+  border-color: #2980b9;
+}
+
+.tabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 30px;
+  border-bottom: 2px solid #e0e0e0;
+  overflow-x: auto;
+}
+
+.tab {
+  padding: 12px 20px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 500;
+  color: #666;
+  transition: all 0.3s;
+  border-bottom: 3px solid transparent;
+  white-space: nowrap;
+}
+
+.tab:hover {
+  color: #3498db;
+  background-color: #f8f9fa;
+}
+
+.tab.active {
+  color: #3498db;
+  border-bottom-color: #3498db;
+  font-weight: 600;
+}
+
+.kpi-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.kpi-section {
+  background: #fff;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.kpi-section h3 {
+  font-size: 22px;
+  color: #2c3e50;
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #3498db;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #3498db;
+}
+
+.section-header h3 {
+  font-size: 22px;
+  color: #2c3e50;
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+.btn-manage {
+  padding: 10px 20px;
+  background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.btn-manage:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(52, 152, 219, 0.4);
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  overflow-y: auto;
+  padding: 20px;
+}
+
+.kpi-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.kpi-card {
+  background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  transition: all 0.3s;
+  border: 1px solid #e9ecef;
+}
+
+.kpi-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 20px rgba(52, 152, 219, 0.2);
+  border-color: #3498db;
+}
+
+.kpi-icon {
+  font-size: 36px;
+  min-width: 50px;
+  text-align: center;
+}
+
+.kpi-content {
+  flex: 1;
+}
+
+.kpi-content h4 {
+  font-size: 14px;
+  color: #666;
+  margin: 0 0 8px 0;
+  font-weight: 500;
+}
+
+.kpi-value {
+  font-size: 28px;
+  font-weight: 700;
+  color: #2c3e50;
+  margin: 0;
+}
+
+.kpi-card.percentage .kpi-value {
+  font-size: 32px;
+  color: #3498db;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 8px;
+  background-color: #e9ecef;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-top: 10px;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #3498db 0%, #2ecc71 100%);
+  transition: width 0.5s ease;
+  border-radius: 10px;
+}
+
+.loading {
+  text-align: center;
+  padding: 50px;
+  font-size: 18px;
+  color: #666;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .kpi-cards {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+
+  .tabs {
+    gap: 5px;
+  }
+
+  .tab {
+    padding: 10px 15px;
+    font-size: 13px;
+  }
+
+  .kpi-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .kpi-section {
+    padding: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .page-header h1 {
+    font-size: 22px;
+  }
+
+  .kpi-card {
+    padding: 15px;
+  }
+
+  .kpi-icon {
+    font-size: 28px;
+    min-width: 40px;
+  }
+
+  .kpi-value {
+    font-size: 24px;
+  }
+}

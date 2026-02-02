@@ -96,7 +96,21 @@ CCIS-Vision est une plateforme de gestion complète permettant au Centre de Comm
 - ✅ Aide contextuelle
 - ✅ Résolution de problèmes guidée
 
-### 🔔 Système d'Alertes
+### � Indicateurs de Performance (KPIs)
+- ✅ 7 catégories de KPIs par département
+- ✅ Gestion périodique (mensuelle, trimestrielle, annuelle)
+- ✅ Audit & Contrôle (5 indicateurs)
+- ✅ Relations Institutionnelles (5 indicateurs)
+- ✅ Synthèse Départements (4 indicateurs)
+- ✅ Administratif & Financier (7 indicateurs)
+- ✅ Appui & Promotion (11 indicateurs)
+- ✅ Services aux Ressortissants (3 indicateurs)
+- ✅ Stratégie & Partenariat (6 indicateurs)
+- ✅ Interface de gestion avec formulaires dédiés
+- ✅ Visualisations interactives et cartes KPI
+- ✅ Suivi de l'évolution dans le temps
+
+### �🔔 Système d'Alertes
 - ✅ Alertes automatiques par email
 - ✅ Notifications budgétaires (seuils)
 - ✅ Rappels d'échéances
@@ -529,7 +543,39 @@ GET    /chatbot/templates  # Liste templates
 GET    /chatbot/faq        # Questions fréquentes
 ```
 
-#### 📈 Dashboard
+#### � KPIs
+```http
+GET    /kpis/periods                     # Liste toutes les périodes
+GET    /kpis/periods/active              # Période active
+POST   /kpis/periods                     # Créer période (Admin)
+PUT    /kpis/periods/:id                 # Modifier période (Admin)
+DELETE /kpis/periods/:id                 # Supprimer période (Admin)
+
+GET    /kpis/audit-control/:periodId     # KPIs Audit & Contrôle
+POST   /kpis/audit-control               # Créer/Modifier KPIs Audit
+
+GET    /kpis/relations-institutionnelles/:periodId  # KPIs Relations
+POST   /kpis/relations-institutionnelles           # Créer/Modifier KPIs Relations
+
+GET    /kpis/synthese-departements/:periodId       # KPIs Synthèse
+POST   /kpis/synthese-departements                 # Créer/Modifier KPIs Synthèse
+
+GET    /kpis/admin-financier/:periodId   # KPIs Admin & Financier
+POST   /kpis/admin-financier             # Créer/Modifier KPIs Admin
+
+GET    /kpis/appui-promotion/:periodId   # KPIs Appui & Promotion
+POST   /kpis/appui-promotion             # Créer/Modifier KPIs Appui
+
+GET    /kpis/services-ressortissants/:periodId  # KPIs Services Ressortissants
+POST   /kpis/services-ressortissants           # Créer/Modifier KPIs Services
+
+GET    /kpis/strategie-partenariat/:periodId   # KPIs Stratégie & Partenariat
+POST   /kpis/strategie-partenariat             # Créer/Modifier KPIs Stratégie
+
+GET    /kpis/all/:periodId               # Tous les KPIs d'une période
+```
+
+#### �📈 Dashboard
 ```http
 GET    /dashboard/stats    # Statistiques générales
 GET    /dashboard/charts   # Données graphiques

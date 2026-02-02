@@ -14,6 +14,7 @@ import {
   ChevronLeft,
   ChevronRight,
   Map,
+  BarChart3,
 } from 'lucide-react';
 import { useAuthStore } from '../../store/authStore';
 import { isAdmin, canModify, canImport } from '../../utils/permissions';
@@ -24,6 +25,7 @@ const navigation = [
   { name: 'Activités', href: '/activities', icon: Calendar, requiresAuth: true },
   // { name: 'Carte', href: '/map', icon: Map, requiresAuth: true },
   { name: 'Alertes', href: '/alerts', icon: Bell, requiresAuth: true ,requiresPermission: canModify},
+  { name: 'KPIs', href: '/kpis', icon: BarChart3, requiresAuth: true },
   { name: 'Import Excel', href: '/excel', icon: FileSpreadsheet, requiresPermission: canImport },
   { name: 'Utilisateurs', href: '/users', icon: Users, requiresPermission: isAdmin },
   { name: 'Paramètres', href: '/settings', icon: Settings, requiresAuth: true, requiresPermission: isAdmin },

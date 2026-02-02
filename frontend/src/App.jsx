@@ -19,6 +19,7 @@ import ExcelPage from './pages/ExcelPage';
 import UsersPage from './pages/UsersPage';
 import SettingsPage from './pages/SettingsPage';
 import MapPage from './pages/MapPage';
+import KPIsPage from './pages/KPIsPage';
 
 // Create a query client
 const queryClient = new QueryClient({
@@ -80,6 +81,7 @@ function App() {
                     <Route path="/activities" element={<ActivitiesPage />} />
                     <Route path="/map" element={<MapPage />} />
                     <Route path="/alerts" element={<AlertsPage />} />
+                    <Route path="/kpis" element={<KPIsPage />} />
                     <Route 
                       path="/excel" 
                       element={

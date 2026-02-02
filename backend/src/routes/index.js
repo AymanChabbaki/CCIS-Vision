@@ -10,6 +10,7 @@ const dashboardRoutes = require('./dashboard.routes');
 const alertRoutes = require('./alert.routes');
 const userRoutes = require('./user.routes');
 const chatbotRoutes = require('./chatbot.routes');
+const kpiRoutes = require('./kpiRoutes');
 
 // Mount routes
 router.use('/auth', authRoutes);
@@ -20,6 +21,7 @@ router.use('/dashboard', dashboardRoutes);
 router.use('/alerts', alertRoutes);
 router.use('/users', userRoutes);
 router.use('/chatbot', chatbotRoutes);
+router.use('/kpis', kpiRoutes);
 
 // Health check endpoint
 router.get('/health', (req, res) => {
