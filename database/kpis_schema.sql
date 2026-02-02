@@ -48,11 +48,11 @@ CREATE TABLE IF NOT EXISTS kpi_relations_institutionnelles (
     period_id UUID NOT NULL REFERENCES kpi_periods(id) ON DELETE CASCADE,
     
     -- Metrics
-    nombre_reunions_ag_bureau_commissions INTEGER DEFAULT 0 CHECK (nombre_reunions_ag_bureau_commissions >= 0),
-    nombre_conventions_partenariats INTEGER DEFAULT 0 CHECK (nombre_conventions_partenariats >= 0),
-    nombre_pv_rapports INTEGER DEFAULT 0 CHECK (nombre_pv_rapports >= 0),
-    nombre_relations_administrations INTEGER DEFAULT 0 CHECK (nombre_relations_administrations >= 0),
-    taux_realisation_plan_action DECIMAL(5,2) DEFAULT 0 CHECK (taux_realisation_plan_action BETWEEN 0 AND 100),
+    conventions_signees INTEGER DEFAULT 0 CHECK (conventions_signees >= 0),
+    partenariats_actifs INTEGER DEFAULT 0 CHECK (partenariats_actifs >= 0),
+    reunions_strategiques INTEGER DEFAULT 0 CHECK (reunions_strategiques >= 0),
+    actions_lobbying INTEGER DEFAULT 0 CHECK (actions_lobbying >= 0),
+    satisfaction_partenaires DECIMAL(5,2) DEFAULT 0 CHECK (satisfaction_partenaires BETWEEN 0 AND 100),
     
     -- Metadata
     notes TEXT,
@@ -69,17 +69,11 @@ CREATE TABLE IF NOT EXISTS kpi_synthese_departements (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     period_id UUID NOT NULL REFERENCES kpi_periods(id) ON DELETE CASCADE,
     
-    -- Stratégie & Partenariat
-    opportunites_internationales INTEGER DEFAULT 0 CHECK (opportunites_internationales >= 0),
-    
-    -- Services aux Ressortissants
-    demandes_traitees INTEGER DEFAULT 0 CHECK (demandes_traitees >= 0),
-    
-    -- Appui & Promotion
-    entreprises_accompagnees INTEGER DEFAULT 0 CHECK (entreprises_accompagnees >= 0),
-    
-    -- Administratif & Financier
-    prestations_realisees INTEGER DEFAULT 0 CHECK (prestations_realisees >= 0),
+    -- Metrics
+    nombre_projets_realises INTEGER DEFAULT 0 CHECK (nombre_projets_realises >= 0),
+    taux_realisation_objectifs DECIMAL(5,2) DEFAULT 0 CHECK (taux_realisation_objectifs BETWEEN 0 AND 100),
+    nombre_formations_organisees INTEGER DEFAULT 0 CHECK (nombre_formations_organisees >= 0),
+    nombre_participants_formations INTEGER DEFAULT 0 CHECK (nombre_participants_formations >= 0),
     
     -- Metadata
     notes TEXT,
@@ -97,13 +91,13 @@ CREATE TABLE IF NOT EXISTS kpi_admin_financier (
     period_id UUID NOT NULL REFERENCES kpi_periods(id) ON DELETE CASCADE,
     
     -- Metrics
-    assemblees_generales_organisees INTEGER DEFAULT 0 CHECK (assemblees_generales_organisees >= 0),
-    prestations_logistiques INTEGER DEFAULT 0 CHECK (prestations_logistiques >= 0),
-    services_restauration INTEGER DEFAULT 0 CHECK (services_restauration >= 0),
-    salles_mises_disposition INTEGER DEFAULT 0 CHECK (salles_mises_disposition >= 0),
-    attestations_delivrees INTEGER DEFAULT 0 CHECK (attestations_delivrees >= 0),
-    locations_salles INTEGER DEFAULT 0 CHECK (locations_salles >= 0),
-    services_agenda_organises INTEGER DEFAULT 0 CHECK (services_agenda_organises >= 0),
+    budget_alloue DECIMAL(15,2) DEFAULT 0 CHECK (budget_alloue >= 0),
+    budget_consomme DECIMAL(15,2) DEFAULT 0 CHECK (budget_consomme >= 0),
+    taux_execution_budgetaire DECIMAL(5,2) DEFAULT 0 CHECK (taux_execution_budgetaire BETWEEN 0 AND 100),
+    nombre_factures_traitees INTEGER DEFAULT 0 CHECK (nombre_factures_traitees >= 0),
+    delai_moyen_paiement INTEGER DEFAULT 0 CHECK (delai_moyen_paiement >= 0),
+    nombre_marches_publics INTEGER DEFAULT 0 CHECK (nombre_marches_publics >= 0),
+    taux_conformite_procedures DECIMAL(5,2) DEFAULT 0 CHECK (taux_conformite_procedures BETWEEN 0 AND 100),
     
     -- Metadata
     notes TEXT,
@@ -121,15 +115,15 @@ CREATE TABLE IF NOT EXISTS kpi_appui_promotion (
     period_id UUID NOT NULL REFERENCES kpi_periods(id) ON DELETE CASCADE,
     
     -- Metrics
-    porteurs_projets_accompagnes INTEGER DEFAULT 0 CHECK (porteurs_projets_accompagnes >= 0),
-    createurs_entreprise_accompagnes INTEGER DEFAULT 0 CHECK (createurs_entreprise_accompagnes >= 0),
-    entreprises_guichets_proximite INTEGER DEFAULT 0 CHECK (entreprises_guichets_proximite >= 0),
-    demandes_administratives_traitees INTEGER DEFAULT 0 CHECK (demandes_administratives_traitees >= 0),
-    porteurs_projets_satisfaits INTEGER DEFAULT 0 CHECK (porteurs_projets_satisfaits >= 0),
-    entrepreneurs_satisfaits INTEGER DEFAULT 0 CHECK (entrepreneurs_satisfaits >= 0),
-    taux_satisfaction DECIMAL(5,2) DEFAULT 0 CHECK (taux_satisfaction BETWEEN 0 AND 100),
-    entrepreneurs_financement INTEGER DEFAULT 0 CHECK (entrepreneurs_financement >= 0),
-    formations_employes INTEGER DEFAULT 0 CHECK (formations_employes >= 0),
+    nombre_entreprises_accompagnees INTEGER DEFAULT 0 CHECK (nombre_entreprises_accompagnees >= 0),
+    missions_economiques_organisees INTEGER DEFAULT 0 CHECK (missions_economiques_organisees >= 0),
+    salons_participations INTEGER DEFAULT 0 CHECK (salons_participations >= 0),
+    investissements_generes DECIMAL(15,2) DEFAULT 0 CHECK (investissements_generes >= 0),
+    emplois_crees INTEGER DEFAULT 0 CHECK (emplois_crees >= 0),
+    entreprises_inscrites INTEGER DEFAULT 0 CHECK (entreprises_inscrites >= 0),
+    entreprises_inscrites_secteur_cible INTEGER DEFAULT 0 CHECK (entreprises_inscrites_secteur_cible >= 0),
+    entreprises_actives INTEGER DEFAULT 0 CHECK (entreprises_actives >= 0),
+    entreprises_radiation_volontaire INTEGER DEFAULT 0 CHECK (entreprises_radiation_volontaire >= 0),
     entreprises_radiees INTEGER DEFAULT 0 CHECK (entreprises_radiees >= 0),
     entreprises_beneficiaires_services INTEGER DEFAULT 0 CHECK (entreprises_beneficiaires_services >= 0),
     
@@ -391,37 +385,37 @@ SELECT
     ac.nombre_procedures_ameliorees,
     
     -- Relations Institutionnelles
-    ri.nombre_reunions_ag_bureau_commissions,
-    ri.nombre_conventions_partenariats,
-    ri.nombre_pv_rapports,
-    ri.nombre_relations_administrations,
-    ri.taux_realisation_plan_action,
+    ri.conventions_signees,
+    ri.partenariats_actifs,
+    ri.reunions_strategiques,
+    ri.actions_lobbying,
+    ri.satisfaction_partenaires,
     
-    -- Synthèse
-    sd.opportunites_internationales,
-    sd.demandes_traitees,
-    sd.entreprises_accompagnees as synthese_entreprises,
-    sd.prestations_realisees,
+    -- Synthèse Départements
+    sd.nombre_projets_realises,
+    sd.taux_realisation_objectifs,
+    sd.nombre_formations_organisees,
+    sd.nombre_participants_formations,
     
     -- Admin Financier
-    af.assemblees_generales_organisees,
-    af.prestations_logistiques,
-    af.services_restauration,
-    af.salles_mises_disposition,
-    af.attestations_delivrees,
-    af.locations_salles,
-    af.services_agenda_organises,
+    af.budget_alloue,
+    af.budget_consomme,
+    af.taux_execution_budgetaire,
+    af.nombre_factures_traitees,
+    af.delai_moyen_paiement,
+    af.nombre_marches_publics,
+    af.taux_conformite_procedures,
     
     -- Appui Promotion
-    ap.porteurs_projets_accompagnes,
-    ap.createurs_entreprise_accompagnes,
-    ap.entreprises_guichets_proximite,
-    ap.demandes_administratives_traitees,
-    ap.porteurs_projets_satisfaits,
-    ap.entrepreneurs_satisfaits,
-    ap.taux_satisfaction,
-    ap.entrepreneurs_financement,
-    ap.formations_employes,
+    ap.nombre_entreprises_accompagnees,
+    ap.missions_economiques_organisees,
+    ap.salons_participations,
+    ap.investissements_generes,
+    ap.emplois_crees,
+    ap.entreprises_inscrites,
+    ap.entreprises_inscrites_secteur_cible,
+    ap.entreprises_actives,
+    ap.entreprises_radiation_volontaire,
     ap.entreprises_radiees,
     ap.entreprises_beneficiaires_services,
     
@@ -434,7 +428,7 @@ SELECT
     sp.actions_realisees,
     sp.ressortissants_satisfaits_evenements,
     sp.entreprises_potentiel_export,
-    sp.entreprises_accompagnees as strategie_entreprises,
+    sp.entreprises_accompagnees,
     sp.delegations,
     sp.opportunites_affaires_internationales
     
