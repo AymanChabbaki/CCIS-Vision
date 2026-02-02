@@ -10,7 +10,6 @@ import { activityService } from '../services/activityService';
 import { Card, Loader } from '../components/common';
 import { KPICard } from '../components/dashboard/KPICard';
 import InteractiveMap from '../components/map/InteractiveMap';
-import KpiManagementForm from '../components/kpi/KpiManagementForm';
 import { 
   Building2, 
   Calendar, 
@@ -24,7 +23,6 @@ import {
   Clock,
   Map,
   Settings,
-  Edit3,
   Shield,
   Briefcase,
   DollarSign as Finance,
@@ -38,8 +36,6 @@ const API_URL = import.meta.env.VITE_API_URL;
 export const DashboardPage = () => {
   const currentYear = new Date().getFullYear();
   const [activeKpiTab, setActiveKpiTab] = useState('synthese');
-  const [showManagementForm, setShowManagementForm] = useState(false);
-  const [managementCategory, setManagementCategory] = useState(null);
   const [selectedPeriod, setSelectedPeriod] = useState(null);
   const [periods, setPeriods] = useState([]);
   const [kpiData, setKpiData] = useState({
@@ -124,18 +120,7 @@ export const DashboardPage = () => {
     }
   };
 
-  const handleManageKpis = (category) => {
-    setManagementCategory(category);
-    setShowManagementForm(true);
-  };
 
-  const handleCloseForm = () => {
-    setShowManagementForm(false);
-    setManagementCategory(null);
-    if (selectedPeriod) {
-      fetchAllKpis();
-    }
-  };
 
   // Fetch companies and activities for map
   const { data: companiesData } = useQuery({
@@ -193,6 +178,21 @@ export const DashboardPage = () => {
     return mapping[tab];
   };
 
+  const getColorScheme = (index) => {
+    const colors = [
+      { from: 'from-blue-500', to: 'to-blue-600', text: 'text-white', icon: TrendingUp },
+      { from: 'from-green-500', to: 'to-green-600', text: 'text-white', icon: CheckCircle },
+      { from: 'from-purple-500', to: 'to-purple-600', text: 'text-white', icon: BarChart3 },
+      { from: 'from-orange-500', to: 'to-orange-600', text: 'text-white', icon: DollarSign },
+      { from: 'from-pink-500', to: 'to-pink-600', text: 'text-white', icon: Users },
+      { from: 'from-indigo-500', to: 'to-indigo-600', text: 'text-white', icon: Building2 },
+      { from: 'from-teal-500', to: 'to-teal-600', text: 'text-white', icon: Calendar },
+      { from: 'from-red-500', to: 'to-red-600', text: 'text-white', icon: AlertTriangle },
+      { from: 'from-cyan-500', to: 'to-cyan-600', text: 'text-white', icon: Briefcase },
+    ];
+    return colors[index % colors.length];
+  };
+
   const renderKpiTab = () => {
     const category = getCategoryFromTab(activeKpiTab);
     const data = kpiData[category] || {};
@@ -208,17 +208,28 @@ export const DashboardPage = () => {
 
     return (
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {Object.entries(data).map(([key, value]) => {
+        {Object.entries(data).map(([key, value], index) => {
           if (key === 'id' || key === 'period_id' || key === 'created_by' || key === 'created_at' || key === 'updated_at' || key === 'notes') return null;
           
           const label = key.split('_').map(word => 
             word.charAt(0).toUpperCase() + word.slice(1)
           ).join(' ');
           
+          const colorScheme = getColorScheme(index);
+          const Icon = colorScheme.icon;
+          
           return (
-            <div key={key} className="p-4 bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg border border-gray-200">
-              <p className="text-sm text-gray-600 mb-1">{label}</p>
-              <p className="text-2xl font-bold text-gray-900">{value || 0}</p>
+            <div key={key} className={`p-5 bg-gradient-to-br ${colorScheme.from} ${colorScheme.to} rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 transform hover:-translate-y-1`}>
+              <div className="flex items-center justify-between mb-3">
+                <Icon className={`h-8 w-8 ${colorScheme.text} opacity-80`} />
+                <div className={`text-xs ${colorScheme.text} opacity-75 font-medium px-2 py-1 bg-white bg-opacity-20 rounded-full`}>
+                  {activeKpiTab.toUpperCase()}
+                </div>
+              </div>
+              <p className={`text-sm ${colorScheme.text} opacity-90 mb-2`}>{label}</p>
+              <p className={`text-3xl font-bold ${colorScheme.text}`}>
+                {typeof value === 'number' ? value.toLocaleString() : value || 0}
+              </p>
             </div>
           );
         })}
@@ -677,15 +688,6 @@ export const DashboardPage = () => {
         {selectedPeriod ? (
           <div>
             {renderKpiTab()}
-            <div className="mt-6 flex justify-end">
-              <button
-                onClick={() => handleManageKpis(getCategoryFromTab(activeKpiTab))}
-                className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
-              >
-                <Edit3 className="h-4 w-4" />
-                Modifier les KPIs
-              </button>
-            </div>
           </div>
         ) : (
           <div className="text-center py-12 text-gray-500">
@@ -694,32 +696,6 @@ export const DashboardPage = () => {
           </div>
         )}
       </Card>
-
-      {/* KPI Management Form Modal */}
-      {showManagementForm && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto">
-            <div className="p-6">
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="text-2xl font-bold text-gray-900">Gestion des KPIs</h2>
-                <button
-                  onClick={handleCloseForm}
-                  className="text-gray-500 hover:text-gray-700"
-                >
-                  <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                  </svg>
-                </button>
-              </div>
-              <KpiManagementForm
-                periodId={selectedPeriod?.id}
-                category={managementCategory}
-                onClose={handleCloseForm}
-              />
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 };
