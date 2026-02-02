@@ -283,6 +283,77 @@ export const DashboardPage = () => {
         />
       </div>
 
+      {/* KPI Management Section */}
+      <Card className="mb-8">
+        <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center gap-3">
+            <BarChart3 className="h-6 w-6 text-indigo-600" />
+            <h3 className="text-xl font-semibold text-gray-900">Indicateurs de Performance (KPIs)</h3>
+          </div>
+          <div className="flex items-center gap-3">
+            <select
+              value={selectedPeriod?.id || ''}
+              onChange={(e) => {
+                const period = periods.find(p => p.id === e.target.value);
+                setSelectedPeriod(period);
+              }}
+              className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-white"
+              style={{ minWidth: '200px' }}
+            >
+              <option value="">Sélectionner une période</option>
+              {periods.map(period => (
+                <option key={period.id} value={period.id}>
+                  {period.name} {period.is_active ? '(Actif)' : ''}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+
+        {/* KPI Tabs */}
+        <div className="border-b border-gray-200 mb-6">
+          <div className="flex overflow-x-auto">
+            {[
+              { id: 'synthese', label: 'Synthèse Départements', icon: Briefcase },
+              { id: 'audit', label: 'Audit & Contrôle', icon: Shield },
+              { id: 'relations', label: 'Relations Institutionnelles', icon: Handshake },
+              { id: 'admin', label: 'Admin & Financier', icon: Finance },
+              { id: 'appui', label: 'Appui Promotion', icon: Megaphone },
+              { id: 'services', label: 'Services Ressortissants', icon: UserCheck },
+              { id: 'strategie', label: 'Stratégie Partenariat', icon: TrendingUp }
+            ].map(tab => {
+              const Icon = tab.icon;
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveKpiTab(tab.id)}
+                  className={`flex items-center gap-2 px-6 py-3 font-medium whitespace-nowrap transition-colors ${
+                    activeKpiTab === tab.id
+                      ? 'border-b-2 border-indigo-600 text-indigo-600'
+                      : 'text-gray-600 hover:text-gray-900'
+                  }`}
+                >
+                  <Icon className="h-4 w-4" />
+                  {tab.label}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* KPI Content */}
+        {selectedPeriod ? (
+          <div>
+            {renderKpiTab()}
+          </div>
+        ) : (
+          <div className="text-center py-12 text-gray-500">
+            <Settings className="h-12 w-12 mx-auto mb-4 opacity-50" />
+            <p>Sélectionnez une période pour voir les KPIs</p>
+          </div>
+        )}
+      </Card>
+
       {/* Charts and Stats Row 1 */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
         {/* Activity Trends Chart */}
@@ -1332,77 +1403,6 @@ export const DashboardPage = () => {
             </p>
           </div>
         </div>
-      </Card>
-
-      {/* KPI Management Section */}
-      <Card className="mt-6">
-        <div className="flex items-center justify-between mb-6">
-          <div className="flex items-center gap-3">
-            <BarChart3 className="h-6 w-6 text-indigo-600" />
-            <h3 className="text-xl font-semibold text-gray-900">Indicateurs de Performance (KPIs)</h3>
-          </div>
-          <div className="flex items-center gap-3">
-            <select
-              value={selectedPeriod?.id || ''}
-              onChange={(e) => {
-                const period = periods.find(p => p.id === e.target.value);
-                setSelectedPeriod(period);
-              }}
-              className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-white"
-              style={{ minWidth: '200px' }}
-            >
-              <option value="">Sélectionner une période</option>
-              {periods.map(period => (
-                <option key={period.id} value={period.id}>
-                  {period.name} {period.is_active ? '(Actif)' : ''}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
-
-        {/* KPI Tabs */}
-        <div className="border-b border-gray-200 mb-6">
-          <div className="flex overflow-x-auto">
-            {[
-              { id: 'synthese', label: 'Synthèse Départements', icon: Briefcase },
-              { id: 'audit', label: 'Audit & Contrôle', icon: Shield },
-              { id: 'relations', label: 'Relations Institutionnelles', icon: Handshake },
-              { id: 'admin', label: 'Admin & Financier', icon: Finance },
-              { id: 'appui', label: 'Appui Promotion', icon: Megaphone },
-              { id: 'services', label: 'Services Ressortissants', icon: UserCheck },
-              { id: 'strategie', label: 'Stratégie Partenariat', icon: TrendingUp }
-            ].map(tab => {
-              const Icon = tab.icon;
-              return (
-                <button
-                  key={tab.id}
-                  onClick={() => setActiveKpiTab(tab.id)}
-                  className={`flex items-center gap-2 px-6 py-3 font-medium whitespace-nowrap transition-colors ${
-                    activeKpiTab === tab.id
-                      ? 'border-b-2 border-indigo-600 text-indigo-600'
-                      : 'text-gray-600 hover:text-gray-900'
-                  }`}
-                >
-                  <Icon className="h-4 w-4" />
-                  {tab.label}
-                </button>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* KPI Content */}
-        {selectedPeriod ? (
-          <div>
-            {renderKpiTab()}
-          </div>
-        ) : (
-          <div className="text-center py-12 text-gray-500">
-            <Settings className="h-12 w-12 mx-auto mb-4 opacity-50" />
-            <p>Sélectionnez une période pour voir les KPIs</p>
-          </div>
-        )}
       </Card>
     </div>
   );
