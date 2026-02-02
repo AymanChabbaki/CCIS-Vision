@@ -24,6 +24,16 @@ class KpiController {
       });
     } catch (error) {
       console.error('Error fetching periods:', error);
+      
+      // Check if it's a table doesn't exist error
+      if (error.message && error.message.includes('does not exist')) {
+        return res.status(503).json({
+          status: 'error',
+          message: 'KPI tables not yet created. Please run database/kpis_schema.sql on your database.',
+          error: error.message
+        });
+      }
+      
       res.status(500).json({
         status: 'error',
         message: 'Erreur lors de la récupération des périodes'

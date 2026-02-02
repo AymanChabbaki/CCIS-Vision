@@ -78,4 +78,13 @@ router.post('/strategie-partenariat', authenticateToken, KpiController.upsertStr
 
 router.get('/all/:periodId', authenticateToken, KpiController.getAllKpisByPeriod);
 
+// Health check for KPI routes
+router.get('/health', (req, res) => {
+  res.json({
+    status: 'success',
+    message: 'KPI routes are working',
+    note: 'Run database/kpis_schema.sql on Neon to activate KPI features'
+  });
+});
+
 module.exports = router;
