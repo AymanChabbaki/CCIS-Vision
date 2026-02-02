@@ -515,6 +515,387 @@ export const DashboardPage = () => {
       </div>
 
       {/* Charts and Stats Row 3 */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+        {/* Budget Pie Chart */}
+        <Card>
+          <div className="flex items-center justify-between mb-6">
+            <h3 className="text-lg font-semibold text-gray-900">Distribution du budget</h3>
+            <DollarSign className="h-5 w-5 text-gray-400" />
+          </div>
+          
+          <div className="flex flex-col items-center">
+            {/* Donut Chart */}
+            <div className="relative w-48 h-48 mb-6">
+              <svg className="transform -rotate-90" width="192" height="192" viewBox="0 0 192 192">
+                {/* Background circle */}
+                <circle
+                  cx="96"
+                  cy="96"
+                  r="80"
+                  fill="none"
+                  stroke="#f3f4f6"
+                  strokeWidth="32"
+                />
+                {/* Formations - 35% - Blue */}
+                <circle
+                  cx="96"
+                  cy="96"
+                  r="80"
+                  fill="none"
+                  stroke="url(#gradient-blue)"
+                  strokeWidth="32"
+                  strokeDasharray="175.93 502.65"
+                  strokeDashoffset="0"
+                  className="transition-all duration-1000"
+                />
+                {/* Événements - 25% - Purple */}
+                <circle
+                  cx="96"
+                  cy="96"
+                  r="80"
+                  fill="none"
+                  stroke="url(#gradient-purple)"
+                  strokeWidth="32"
+                  strokeDasharray="125.66 502.65"
+                  strokeDashoffset="-175.93"
+                  className="transition-all duration-1000"
+                />
+                {/* Développement - 20% - Green */}
+                <circle
+                  cx="96"
+                  cy="96"
+                  r="80"
+                  fill="none"
+                  stroke="url(#gradient-green)"
+                  strokeWidth="32"
+                  strokeDasharray="100.53 502.65"
+                  strokeDashoffset="-301.59"
+                  className="transition-all duration-1000"
+                />
+                {/* Marketing - 12% - Orange */}
+                <circle
+                  cx="96"
+                  cy="96"
+                  r="80"
+                  fill="none"
+                  stroke="url(#gradient-orange)"
+                  strokeWidth="32"
+                  strokeDasharray="60.32 502.65"
+                  strokeDashoffset="-402.12"
+                  className="transition-all duration-1000"
+                />
+                {/* Infrastructure - 8% - Pink */}
+                <circle
+                  cx="96"
+                  cy="96"
+                  r="80"
+                  fill="none"
+                  stroke="url(#gradient-pink)"
+                  strokeWidth="32"
+                  strokeDasharray="40.21 502.65"
+                  strokeDashoffset="-462.44"
+                  className="transition-all duration-1000"
+                />
+                
+                {/* Gradient definitions */}
+                <defs>
+                  <linearGradient id="gradient-blue" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="#3b82f6" />
+                    <stop offset="100%" stopColor="#2563eb" />
+                  </linearGradient>
+                  <linearGradient id="gradient-purple" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="#a855f7" />
+                    <stop offset="100%" stopColor="#9333ea" />
+                  </linearGradient>
+                  <linearGradient id="gradient-green" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="#10b981" />
+                    <stop offset="100%" stopColor="#059669" />
+                  </linearGradient>
+                  <linearGradient id="gradient-orange" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="#f97316" />
+                    <stop offset="100%" stopColor="#ea580c" />
+                  </linearGradient>
+                  <linearGradient id="gradient-pink" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="#ec4899" />
+                    <stop offset="100%" stopColor="#db2777" />
+                  </linearGradient>
+                </defs>
+              </svg>
+              
+              {/* Center text */}
+              <div className="absolute inset-0 flex flex-col items-center justify-center">
+                <p className="text-3xl font-bold text-gray-900">7.0M</p>
+                <p className="text-xs text-gray-500">Total Budget</p>
+              </div>
+            </div>
+            
+            {/* Legend */}
+            <div className="w-full space-y-2">
+              {[
+                { label: 'Formations', value: '35%', color: 'bg-blue-500' },
+                { label: 'Événements', value: '25%', color: 'bg-purple-500' },
+                { label: 'Développement', value: '20%', color: 'bg-green-500' },
+                { label: 'Marketing', value: '12%', color: 'bg-orange-500' },
+                { label: 'Infrastructure', value: '8%', color: 'bg-pink-500' },
+              ].map((item, index) => (
+                <div key={index} className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <div className={`w-3 h-3 rounded-full ${item.color}`}></div>
+                    <span className="text-sm text-gray-700">{item.label}</span>
+                  </div>
+                  <span className="text-sm font-semibold text-gray-900">{item.value}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </Card>
+
+        {/* Activity Status Donut Chart */}
+        <Card>
+          <div className="flex items-center justify-between mb-6">
+            <h3 className="text-lg font-semibold text-gray-900">Statut des activités</h3>
+            <BarChart3 className="h-5 w-5 text-gray-400" />
+          </div>
+          
+          <div className="flex flex-col items-center">
+            {/* Donut Chart */}
+            <div className="relative w-48 h-48 mb-6">
+              <svg className="transform -rotate-90" width="192" height="192" viewBox="0 0 192 192">
+                {/* Background */}
+                <circle
+                  cx="96"
+                  cy="96"
+                  r="70"
+                  fill="none"
+                  stroke="#f3f4f6"
+                  strokeWidth="40"
+                />
+                {/* Completed - 45% */}
+                <circle
+                  cx="96"
+                  cy="96"
+                  r="70"
+                  fill="none"
+                  stroke="url(#gradient-success)"
+                  strokeWidth="40"
+                  strokeDasharray="197.92 439.82"
+                  strokeLinecap="round"
+                  className="transition-all duration-1000"
+                />
+                {/* In Progress - 35% */}
+                <circle
+                  cx="96"
+                  cy="96"
+                  r="70"
+                  fill="none"
+                  stroke="url(#gradient-info)"
+                  strokeWidth="40"
+                  strokeDasharray="153.94 439.82"
+                  strokeDashoffset="-197.92"
+                  strokeLinecap="round"
+                  className="transition-all duration-1000"
+                />
+                {/* Planned - 15% */}
+                <circle
+                  cx="96"
+                  cy="96"
+                  r="70"
+                  fill="none"
+                  stroke="url(#gradient-warning)"
+                  strokeWidth="40"
+                  strokeDasharray="65.97 439.82"
+                  strokeDashoffset="-351.86"
+                  strokeLinecap="round"
+                  className="transition-all duration-1000"
+                />
+                {/* Cancelled - 5% */}
+                <circle
+                  cx="96"
+                  cy="96"
+                  r="70"
+                  fill="none"
+                  stroke="url(#gradient-danger)"
+                  strokeWidth="40"
+                  strokeDasharray="21.99 439.82"
+                  strokeDashoffset="-417.83"
+                  strokeLinecap="round"
+                  className="transition-all duration-1000"
+                />
+                
+                <defs>
+                  <linearGradient id="gradient-success" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="#10b981" />
+                    <stop offset="100%" stopColor="#059669" />
+                  </linearGradient>
+                  <linearGradient id="gradient-info" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="#3b82f6" />
+                    <stop offset="100%" stopColor="#2563eb" />
+                  </linearGradient>
+                  <linearGradient id="gradient-warning" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="#f59e0b" />
+                    <stop offset="100%" stopColor="#d97706" />
+                  </linearGradient>
+                  <linearGradient id="gradient-danger" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="#ef4444" />
+                    <stop offset="100%" stopColor="#dc2626" />
+                  </linearGradient>
+                </defs>
+              </svg>
+              
+              {/* Center text */}
+              <div className="absolute inset-0 flex flex-col items-center justify-center">
+                <p className="text-3xl font-bold text-gray-900">
+                  {parseInt(activityStats?.data?.stats?.total_activities) || 0}
+                </p>
+                <p className="text-xs text-gray-500">Activités</p>
+              </div>
+            </div>
+            
+            {/* Legend */}
+            <div className="w-full space-y-2">
+              {[
+                { label: 'Complétées', value: parseInt(activityStats?.data?.stats?.completed) || 0, color: 'bg-green-500' },
+                { label: 'En cours', value: parseInt(activityStats?.data?.stats?.in_progress) || 0, color: 'bg-blue-500' },
+                { label: 'Planifiées', value: parseInt(activityStats?.data?.stats?.planned) || 0, color: 'bg-orange-500' },
+                { label: 'Annulées', value: activityStats?.data?.stats?.cancelled || 0, color: 'bg-red-500' },
+              ].map((item, index) => (
+                <div key={index} className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <div className={`w-3 h-3 rounded-full ${item.color}`}></div>
+                    <span className="text-sm text-gray-700">{item.label}</span>
+                  </div>
+                  <span className="text-sm font-semibold text-gray-900">{item.value}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </Card>
+
+        {/* Radial Progress Chart */}
+        <Card>
+          <div className="flex items-center justify-between mb-6">
+            <h3 className="text-lg font-semibold text-gray-900">Score de performance</h3>
+            <TrendingUp className="h-5 w-5 text-gray-400" />
+          </div>
+          
+          <div className="flex flex-col items-center">
+            {/* Multi-ring Progress */}
+            <div className="relative w-48 h-48 mb-6">
+              {/* Overall Performance - Outer ring */}
+              <svg className="transform -rotate-90 absolute inset-0" width="192" height="192" viewBox="0 0 192 192">
+                <circle
+                  cx="96"
+                  cy="96"
+                  r="85"
+                  fill="none"
+                  stroke="#f3f4f6"
+                  strokeWidth="12"
+                />
+                <circle
+                  cx="96"
+                  cy="96"
+                  r="85"
+                  fill="none"
+                  stroke="url(#gradient-emerald)"
+                  strokeWidth="12"
+                  strokeDasharray="534.07"
+                  strokeDashoffset={534.07 * (1 - 0.92)}
+                  strokeLinecap="round"
+                  className="transition-all duration-1000"
+                />
+              </svg>
+              
+              {/* Budget Utilization - Middle ring */}
+              <svg className="transform -rotate-90 absolute inset-0" width="192" height="192" viewBox="0 0 192 192">
+                <circle
+                  cx="96"
+                  cy="96"
+                  r="68"
+                  fill="none"
+                  stroke="#f3f4f6"
+                  strokeWidth="12"
+                />
+                <circle
+                  cx="96"
+                  cy="96"
+                  r="68"
+                  fill="none"
+                  stroke="url(#gradient-blue-ring)"
+                  strokeWidth="12"
+                  strokeDasharray="427.26"
+                  strokeDashoffset={427.26 * (1 - (budgetUtilizationPercentage / 100))}
+                  strokeLinecap="round"
+                  className="transition-all duration-1000"
+                />
+              </svg>
+              
+              {/* Data Quality - Inner ring */}
+              <svg className="transform -rotate-90 absolute inset-0" width="192" height="192" viewBox="0 0 192 192">
+                <circle
+                  cx="96"
+                  cy="96"
+                  r="51"
+                  fill="none"
+                  stroke="#f3f4f6"
+                  strokeWidth="12"
+                />
+                <circle
+                  cx="96"
+                  cy="96"
+                  r="51"
+                  fill="none"
+                  stroke="url(#gradient-purple-ring)"
+                  strokeWidth="12"
+                  strokeDasharray="320.44"
+                  strokeDashoffset={320.44 * (1 - 0.85)}
+                  strokeLinecap="round"
+                  className="transition-all duration-1000"
+                />
+              </svg>
+              
+              <defs>
+                <linearGradient id="gradient-emerald" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stopColor="#10b981" />
+                  <stop offset="100%" stopColor="#059669" />
+                </linearGradient>
+                <linearGradient id="gradient-blue-ring" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stopColor="#3b82f6" />
+                  <stop offset="100%" stopColor="#2563eb" />
+                </linearGradient>
+                <linearGradient id="gradient-purple-ring" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stopColor="#a855f7" />
+                  <stop offset="100%" stopColor="#9333ea" />
+                </linearGradient>
+              </defs>
+              
+              {/* Center text */}
+              <div className="absolute inset-0 flex flex-col items-center justify-center">
+                <p className="text-3xl font-bold text-gray-900">A+</p>
+                <p className="text-xs text-gray-500">Excellent</p>
+              </div>
+            </div>
+            
+            {/* Legend */}
+            <div className="w-full space-y-2">
+              {[
+                { label: 'Performance globale', value: '92%', color: 'bg-emerald-500' },
+                { label: 'Utilisation budget', value: `${budgetUtilizationPercentage}%`, color: 'bg-blue-500' },
+                { label: 'Qualité données', value: '85%', color: 'bg-purple-500' },
+              ].map((item, index) => (
+                <div key={index} className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <div className={`w-3 h-3 rounded-full ${item.color}`}></div>
+                    <span className="text-sm text-gray-700">{item.label}</span>
+                  </div>
+                  <span className="text-sm font-semibold text-gray-900">{item.value}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </Card>
+      </div>
+
+      {/* Original Budget Overview and Data Quality Row */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
         {/* Budget Overview */}
         <Card>
@@ -681,6 +1062,95 @@ export const DashboardPage = () => {
             </div>
           )}
         </Card>
+      </div>
+
+      {/* Gauge Charts Row - Team Productivity */}
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-6">
+        {[
+          { title: 'Productivité', value: 87, color: 'emerald', max: 100, unit: '%' },
+          { title: 'Satisfaction', value: 4.6, color: 'blue', max: 5, unit: '/5' },
+          { title: 'Engagement', value: 78, color: 'purple', max: 100, unit: '%' },
+          { title: 'Innovation', value: 92, color: 'orange', max: 100, unit: '%' },
+        ].map((gauge, index) => {
+          const percentage = (gauge.value / gauge.max) * 100;
+          const rotation = (percentage / 100) * 180;
+          
+          return (
+            <Card key={index}>
+              <div className="flex flex-col items-center">
+                <h4 className="text-sm font-semibold text-gray-700 mb-4">{gauge.title}</h4>
+                
+                {/* Semi-circular Gauge */}
+                <div className="relative w-40 h-20 mb-4">
+                  <svg width="160" height="80" viewBox="0 0 160 80" className="overflow-visible">
+                    {/* Background arc */}
+                    <path
+                      d="M 10 80 A 70 70 0 0 1 150 80"
+                      fill="none"
+                      stroke="#f3f4f6"
+                      strokeWidth="16"
+                      strokeLinecap="round"
+                    />
+                    
+                    {/* Progress arc */}
+                    <path
+                      d="M 10 80 A 70 70 0 0 1 150 80"
+                      fill="none"
+                      stroke={`url(#gauge-gradient-${gauge.color}-${index})`}
+                      strokeWidth="16"
+                      strokeLinecap="round"
+                      strokeDasharray="219.91"
+                      strokeDashoffset={219.91 * (1 - percentage / 100)}
+                      className="transition-all duration-1000"
+                    />
+                    
+                    {/* Gradient definition */}
+                    <defs>
+                      <linearGradient id={`gauge-gradient-${gauge.color}-${index}`} x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" stopColor={
+                          gauge.color === 'emerald' ? '#10b981' :
+                          gauge.color === 'blue' ? '#3b82f6' :
+                          gauge.color === 'purple' ? '#a855f7' :
+                          '#f97316'
+                        } />
+                        <stop offset="100%" stopColor={
+                          gauge.color === 'emerald' ? '#059669' :
+                          gauge.color === 'blue' ? '#2563eb' :
+                          gauge.color === 'purple' ? '#9333ea' :
+                          '#ea580c'
+                        } />
+                      </linearGradient>
+                    </defs>
+                  </svg>
+                  
+                  {/* Center value */}
+                  <div className="absolute inset-x-0 bottom-0 flex flex-col items-center">
+                    <p className={`text-2xl font-bold ${
+                      gauge.color === 'emerald' ? 'text-emerald-600' :
+                      gauge.color === 'blue' ? 'text-blue-600' :
+                      gauge.color === 'purple' ? 'text-purple-600' :
+                      'text-orange-600'
+                    }`}>
+                      {gauge.value}{gauge.unit}
+                    </p>
+                  </div>
+                </div>
+                
+                {/* Status indicator */}
+                <div className={`px-3 py-1 rounded-full text-xs font-semibold ${
+                  percentage >= 80 ? 'bg-green-100 text-green-700' :
+                  percentage >= 60 ? 'bg-blue-100 text-blue-700' :
+                  percentage >= 40 ? 'bg-orange-100 text-orange-700' :
+                  'bg-red-100 text-red-700'
+                }`}>
+                  {percentage >= 80 ? 'Excellent' :
+                   percentage >= 60 ? 'Bien' :
+                   percentage >= 40 ? 'Moyen' : 'Faible'}
+                </div>
+              </div>
+            </Card>
+          );
+        })}
       </div>
 
       {/* Charts and Stats Row 4 - Budget & Performance Details */}
