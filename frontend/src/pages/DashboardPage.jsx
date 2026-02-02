@@ -1,14 +1,16 @@
 /**
  * Dashboard Page - Main overview with KPIs and Charts
  */
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
 import { dashboardService } from '../services/dashboardService';
 import { companyService } from '../services/companyService';
 import { activityService } from '../services/activityService';
 import { Card, Loader } from '../components/common';
 import { KPICard } from '../components/dashboard/KPICard';
 import InteractiveMap from '../components/map/InteractiveMap';
+import KpiManagementForm from '../components/kpi/KpiManagementForm';
 import { 
   Building2, 
   Calendar, 
@@ -20,11 +22,35 @@ import {
   TrendingDown,
   CheckCircle,
   Clock,
-  Map
+  Map,
+  Settings,
+  Edit3,
+  Shield,
+  Briefcase,
+  DollarSign as Finance,
+  Megaphone,
+  UserCheck,
+  Handshake
 } from 'lucide-react';
+
+const API_URL = import.meta.env.VITE_API_URL;
 
 export const DashboardPage = () => {
   const currentYear = new Date().getFullYear();
+  const [activeKpiTab, setActiveKpiTab] = useState('synthese');
+  const [showManagementForm, setShowManagementForm] = useState(false);
+  const [managementCategory, setManagementCategory] = useState(null);
+  const [selectedPeriod, setSelectedPeriod] = useState(null);
+  const [periods, setPeriods] = useState([]);
+  const [kpiData, setKpiData] = useState({
+    audit_control: {},
+    relations_institutionnelles: {},
+    synthese_departements: {},
+    admin_financier: {},
+    appui_promotion: {},
+    services_ressortissants: {},
+    strategie_partenariat: {}
+  });
 
   const { data: overview, isLoading: loadingOverview } = useQuery({
     queryKey: ['dashboard-overview', currentYear],
@@ -45,6 +71,71 @@ export const DashboardPage = () => {
     queryKey: ['data-quality'],
     queryFn: () => dashboardService.getDataQuality(),
   });
+
+  // Fetch KPI periods
+  useEffect(() => {
+    fetchPeriods();
+    fetchActivePeriod();
+  }, []);
+
+  useEffect(() => {
+    if (selectedPeriod) {
+      fetchAllKpis();
+    }
+  }, [selectedPeriod]);
+
+  const fetchPeriods = async () => {
+    try {
+      const token = localStorage.getItem('accessToken');
+      const response = await axios.get(`${API_URL}/kpis/periods`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setPeriods(response.data.data);
+    } catch (error) {
+      console.error('Error fetching periods:', error);
+    }
+  };
+
+  const fetchActivePeriod = async () => {
+    try {
+      const token = localStorage.getItem('accessToken');
+      const response = await axios.get(`${API_URL}/kpis/periods/active`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      if (response.data.data) {
+        setSelectedPeriod(response.data.data);
+      }
+    } catch (error) {
+      console.error('Error fetching active period:', error);
+    }
+  };
+
+  const fetchAllKpis = async () => {
+    if (!selectedPeriod) return;
+    
+    try {
+      const token = localStorage.getItem('accessToken');
+      const response = await axios.get(`${API_URL}/kpis/all/${selectedPeriod.id}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setKpiData(response.data.data);
+    } catch (error) {
+      console.error('Error fetching KPIs:', error);
+    }
+  };
+
+  const handleManageKpis = (category) => {
+    setManagementCategory(category);
+    setShowManagementForm(true);
+  };
+
+  const handleCloseForm = () => {
+    setShowManagementForm(false);
+    setManagementCategory(null);
+    if (selectedPeriod) {
+      fetchAllKpis();
+    }
+  };
 
   // Fetch companies and activities for map
   const { data: companiesData } = useQuery({
@@ -88,6 +179,52 @@ export const DashboardPage = () => {
   const budgetUtilizationPercentage = totalBudgetAllocated > 0 
     ? ((totalBudgetSpent / totalBudgetAllocated) * 100).toFixed(1) 
     : 0;
+
+  const getCategoryFromTab = (tab) => {
+    const mapping = {
+      'synthese': 'synthese_departements',
+      'audit': 'audit_control',
+      'relations': 'relations_institutionnelles',
+      'admin': 'admin_financier',
+      'appui': 'appui_promotion',
+      'services': 'services_ressortissants',
+      'strategie': 'strategie_partenariat'
+    };
+    return mapping[tab];
+  };
+
+  const renderKpiTab = () => {
+    const category = getCategoryFromTab(activeKpiTab);
+    const data = kpiData[category] || {};
+    
+    if (Object.keys(data).length === 0) {
+      return (
+        <div className="text-center py-12 text-gray-500">
+          <BarChart3 className="h-12 w-12 mx-auto mb-4 opacity-50" />
+          <p>Aucune donnée KPI disponible pour cette catégorie</p>
+        </div>
+      );
+    }
+
+    return (
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {Object.entries(data).map(([key, value]) => {
+          if (key === 'id' || key === 'period_id' || key === 'created_by' || key === 'created_at' || key === 'updated_at' || key === 'notes') return null;
+          
+          const label = key.split('_').map(word => 
+            word.charAt(0).toUpperCase() + word.slice(1)
+          ).join(' ');
+          
+          return (
+            <div key={key} className="p-4 bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg border border-gray-200">
+              <p className="text-sm text-gray-600 mb-1">{label}</p>
+              <p className="text-2xl font-bold text-gray-900">{value || 0}</p>
+            </div>
+          );
+        })}
+      </div>
+    );
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50/30 to-purple-50/30">
@@ -477,6 +614,111 @@ export const DashboardPage = () => {
           </div>
         </div>
       </Card>
+
+      {/* KPI Management Section */}
+      <Card className="mt-6">
+        <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center gap-3">
+            <BarChart3 className="h-6 w-6 text-indigo-600" />
+            <h3 className="text-xl font-semibold text-gray-900">Indicateurs de Performance (KPIs)</h3>
+          </div>
+          <div className="flex items-center gap-3">
+            <select
+              value={selectedPeriod?.id || ''}
+              onChange={(e) => {
+                const period = periods.find(p => p.id === parseInt(e.target.value));
+                setSelectedPeriod(period);
+              }}
+              className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+            >
+              <option value="">Sélectionner une période</option>
+              {periods.map(period => (
+                <option key={period.id} value={period.id}>
+                  {period.label} {period.is_active && '(Actif)'}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+
+        {/* KPI Tabs */}
+        <div className="border-b border-gray-200 mb-6">
+          <div className="flex overflow-x-auto">
+            {[
+              { id: 'synthese', label: 'Synthèse Départements', icon: Briefcase },
+              { id: 'audit', label: 'Audit & Contrôle', icon: Shield },
+              { id: 'relations', label: 'Relations Institutionnelles', icon: Handshake },
+              { id: 'admin', label: 'Admin & Financier', icon: Finance },
+              { id: 'appui', label: 'Appui Promotion', icon: Megaphone },
+              { id: 'services', label: 'Services Ressortissants', icon: UserCheck },
+              { id: 'strategie', label: 'Stratégie Partenariat', icon: TrendingUp }
+            ].map(tab => {
+              const Icon = tab.icon;
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveKpiTab(tab.id)}
+                  className={`flex items-center gap-2 px-6 py-3 font-medium whitespace-nowrap transition-colors ${
+                    activeKpiTab === tab.id
+                      ? 'border-b-2 border-indigo-600 text-indigo-600'
+                      : 'text-gray-600 hover:text-gray-900'
+                  }`}
+                >
+                  <Icon className="h-4 w-4" />
+                  {tab.label}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* KPI Content */}
+        {selectedPeriod ? (
+          <div>
+            {renderKpiTab()}
+            <div className="mt-6 flex justify-end">
+              <button
+                onClick={() => handleManageKpis(getCategoryFromTab(activeKpiTab))}
+                className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
+              >
+                <Edit3 className="h-4 w-4" />
+                Modifier les KPIs
+              </button>
+            </div>
+          </div>
+        ) : (
+          <div className="text-center py-12 text-gray-500">
+            <Settings className="h-12 w-12 mx-auto mb-4 opacity-50" />
+            <p>Sélectionnez une période pour voir les KPIs</p>
+          </div>
+        )}
+      </Card>
+
+      {/* KPI Management Form Modal */}
+      {showManagementForm && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="p-6">
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-2xl font-bold text-gray-900">Gestion des KPIs</h2>
+                <button
+                  onClick={handleCloseForm}
+                  className="text-gray-500 hover:text-gray-700"
+                >
+                  <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+              <KpiManagementForm
+                periodId={selectedPeriod?.id}
+                category={managementCategory}
+                onClose={handleCloseForm}
+              />
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

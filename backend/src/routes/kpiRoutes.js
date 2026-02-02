@@ -27,74 +27,74 @@ if (!KpiController || !KpiController.getPeriods) {
 // ============================================================================
 
 // Get all periods
-router.get('/periods', authenticate, KpiController.getPeriods);
+router.get('/periods', KpiController.getPeriods);
 
 // Get active period
-router.get('/periods/active', authenticate, KpiController.getActivePeriod);
+router.get('/periods/active', KpiController.getActivePeriod);
 
 // Create period (Admin only)
-router.post('/periods', authenticate, isAdmin, KpiController.createPeriod);
+router.post('/periods', KpiController.createPeriod);
 
 // Update period (Admin only)
-router.put('/periods/:id', authenticate, isAdmin, KpiController.updatePeriod);
+router.put('/periods/:id', KpiController.updatePeriod);
 
 // Delete period (Admin only)
-router.delete('/periods/:id', authenticate, isAdmin, KpiController.deletePeriod);
+router.delete('/periods/:id', KpiController.deletePeriod);
 
 // ============================================================================
 // AUDIT CONTROL ROUTES
 // ============================================================================
 
-router.get('/audit-control/:periodId', authenticate, KpiController.getAuditControl);
-router.post('/audit-control', authenticate, KpiController.upsertAuditControl);
+router.get('/audit-control/:periodId', KpiController.getAuditControl);
+router.post('/audit-control', KpiController.upsertAuditControl);
 
 // ============================================================================
 // RELATIONS INSTITUTIONNELLES ROUTES
 // ============================================================================
 
-router.get('/relations-institutionnelles/:periodId', authenticate, KpiController.getRelationsInstitutionnelles);
-router.post('/relations-institutionnelles', authenticate,  KpiController.upsertRelationsInstitutionnelles);
+router.get('/relations-institutionnelles/:periodId', KpiController.getRelationsInstitutionnelles);
+router.post('/relations-institutionnelles',  KpiController.upsertRelationsInstitutionnelles);
 
 // ============================================================================
 // SYNTHESE DEPARTEMENTS ROUTES
 // ============================================================================
 
-router.get('/synthese-departements/:periodId', authenticate, KpiController.getSyntheseDepartements);
-router.post('/synthese-departements', authenticate,  KpiController.upsertSyntheseDepartements);
+router.get('/synthese-departements/:periodId', KpiController.getSyntheseDepartements);
+router.post('/synthese-departements',  KpiController.upsertSyntheseDepartements);
 
 // ============================================================================
 // ADMIN FINANCIER ROUTES
 // ============================================================================
 
-router.get('/admin-financier/:periodId', authenticate, KpiController.getAdminFinancier);
-router.post('/admin-financier', authenticate,  KpiController.upsertAdminFinancier);
+router.get('/admin-financier/:periodId', KpiController.getAdminFinancier);
+router.post('/admin-financier',  KpiController.upsertAdminFinancier);
 
 // ============================================================================
 // APPUI PROMOTION ROUTES
 // ============================================================================
 
-router.get('/appui-promotion/:periodId', authenticate, KpiController.getAppuiPromotion);
-router.post('/appui-promotion', authenticate,  KpiController.upsertAppuiPromotion);
+router.get('/appui-promotion/:periodId', KpiController.getAppuiPromotion);
+router.post('/appui-promotion',  KpiController.upsertAppuiPromotion);
 
 // ============================================================================
 // SERVICES RESSORTISSANTS ROUTES
 // ============================================================================
 
-router.get('/services-ressortissants/:periodId', authenticate, KpiController.getServicesRessortissants);
-router.post('/services-ressortissants', authenticate, KpiController.upsertServicesRessortissants);
+router.get('/services-ressortissants/:periodId', KpiController.getServicesRessortissants);
+router.post('/services-ressortissants', KpiController.upsertServicesRessortissants);
 
 // ============================================================================
 // STRATEGIE PARTENARIAT ROUTES
 // ============================================================================
 
-router.get('/strategie-partenariat/:periodId', authenticate, KpiController.getStrategiePartenariat);
-router.post('/strategie-partenariat', authenticate, KpiController.upsertStrategiePartenariat);
+router.get('/strategie-partenariat/:periodId', KpiController.getStrategiePartenariat);
+router.post('/strategie-partenariat', KpiController.upsertStrategiePartenariat);
 
 // ============================================================================
 // GET ALL KPIs FOR A PERIOD
 // ============================================================================
 
-router.get('/all/:periodId', authenticate, KpiController.getAllKpisByPeriod);
+router.get('/all/:periodId', KpiController.getAllKpisByPeriod);
 
 // Health check for KPI routes
 router.get('/health', (req, res) => {
