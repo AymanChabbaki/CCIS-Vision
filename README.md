@@ -627,6 +627,22 @@ curl -X POST https://ccis-vision-3l72.vercel.app/api/v1/companies \
   }'
 ```
 
+#### Créer/Modifier KPIs
+```bash
+curl -X POST https://ccis-vision-3l72.vercel.app/api/v1/kpis/audit-control \
+  -H "Authorization: Bearer <token>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "period_id": "uuid-period-id",
+    "nombre_rapports_gestion": 15,
+    "nombre_tableaux_bord": 8,
+    "nombre_missions_audit": 12,
+    "taux_mise_en_oeuvre_recommandations": 85.5,
+    "nombre_procedures_ameliorees": 6,
+    "notes": "Excellent trimestre pour l audit"
+  }'
+```
+
 ---
 
 ## 🗄️ Base de Données
@@ -692,6 +708,28 @@ curl -X POST https://ccis-vision-3l72.vercel.app/api/v1/companies \
 | `budgets` | Budgets et dépenses | 200+ |
 | `import_logs` | Historique imports | Illimité |
 | `chatbot_conversations` | Conversations chatbot | Illimité |
+| `kpi_periods` | Périodes de reporting KPI | 50+ |
+| `kpi_audit_control` | KPIs Audit & Contrôle | Par période |
+| `kpi_relations_institutionnelles` | KPIs Relations Institutionnelles | Par période |
+| `kpi_synthese_departements` | KPIs Synthèse Départements | Par période |
+| `kpi_admin_financier` | KPIs Admin & Financier | Par période |
+| `kpi_appui_promotion` | KPIs Appui & Promotion | Par période |
+| `kpi_services_ressortissants` | KPIs Services Ressortissants | Par période |
+| `kpi_strategie_partenariat` | KPIs Stratégie & Partenariat | Par période |
+
+### Structure KPIs
+
+Les KPIs sont organisés par **périodes** (mensuelle, trimestrielle, annuelle) avec 7 catégories distinctes:
+
+1. **Audit & Contrôle** (5 indicateurs)
+2. **Relations Institutionnelles** (5 indicateurs dont 2 taux)
+3. **Synthèse Départements** (4 indicateurs transversaux)
+4. **Administratif & Financier** (7 indicateurs opérationnels)
+5. **Appui & Promotion** (11 indicateurs de satisfaction et accompagnement)
+6. **Services aux Ressortissants** (3 indicateurs de communication)
+7. **Stratégie & Partenariat** (6 indicateurs internationaux)
+
+Schéma SQL complet: `database/kpis_schema.sql`
 
 ---
 
